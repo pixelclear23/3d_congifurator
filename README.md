@@ -24,15 +24,19 @@ index.html          the whole page
 styles.css          styles, no framework
 main.js             mobile menu + "current section" nav highlight (optional)
 assets/
+  shot-viewer.*         the streamed runtime (the hero image)
   shot-capture.*        the capture tool docked in Omniverse Composer
   shot-builder.*        the browser UI builder
-  shot-viewer.*         the streamed runtime (also the hero image)
-  shot-viewer-bar.*     detail crop of the runtime's bottom chrome
   pipeline.svg          the four stages and the artifact each hands on
   message-flow.svg      click -> configuratorApply -> handler -> USD -> video
   data-model.svg        the six captured JSON files and the two generated ones
   favicon.svg
 ```
+
+The page is deliberately short — around 700 words, a three minute read — on the assumption
+that the first visitor is skimming. The detail that used to be inline now lives behind the
+"For engineers" disclosure in the pipeline section. If you add copy, add it there rather
+than to the top-level sections.
 
 Screenshots are real captures, downscaled to 1920px wide and served as WebP with a
 progressive JPEG fallback through `<picture>`; each frame links to the full-size JPEG. The
