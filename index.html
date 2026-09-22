@@ -8,6 +8,8 @@
 <meta name="color-scheme" content="dark"/>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
 <link rel="stylesheet" href="styles.css"/>
+<!-- first backdrop frame only; the rest are fetched after load -->
+<link rel="preload" as="image" imagesrcset="assets/hero-1.webp" type="image/webp"/>
 <meta property="og:title" content="3D Configurator Toolkit"/>
 <meta property="og:description" content="Record states from a USD stage, author the UI in a browser, stream the RTX render."/>
 <meta property="og:image" content="assets/shot-viewer.jpg"/>
@@ -31,7 +33,17 @@
 
   <!-- ============================== HERO ============================== -->
   <section class="hero">
-    <div class="glow" aria-hidden="true"></div>
+    <!-- Backdrop: RTX stills of the scene the toolkit was built against.
+         Frame 1 ships with the page; JS loads the rest and cross-fades. -->
+    <div class="stage" data-slides="hero-2 hero-3 hero-4" aria-hidden="true">
+      <picture class="slide on">
+        <source srcset="assets/hero-1.webp" type="image/webp"/>
+        <img src="assets/hero-1.jpg" width="2000" height="1125" alt=""
+             fetchpriority="high" decoding="async"/>
+      </picture>
+    </div>
+    <div class="scrim" aria-hidden="true"></div>
+
     <p class="eyebrow">NVIDIA Omniverse Kit · OpenUSD · RTX streaming</p>
     <h1>A configurator you <em>record</em>, not one you code.</h1>
     <p class="lede">
@@ -46,12 +58,15 @@
       <li><b>6</b> JSON files, the whole contract</li>
     </ul>
 
+    <!-- filled in by main.js; without it the first frame simply stays put -->
+    <div class="dots" role="group" aria-label="Backdrop frame"></div>
+
     <figure class="shot hero-shot">
       <a href="assets/shot-viewer.jpg">
         <picture>
           <source srcset="assets/shot-viewer.webp" type="image/webp"/>
           <img src="assets/shot-viewer.jpg" width="1920" height="1047"
-               fetchpriority="high" decoding="async"
+               loading="lazy" decoding="async"
                alt="The streamed configurator in a browser: a path-traced dark green sports car on a turntable, with view buttons top left, nine paint swatches along the bottom and tabs for environment, car paint, rims, door and lights."/>
         </picture>
       </a>

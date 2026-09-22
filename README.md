@@ -44,6 +44,19 @@ three explanatory diagrams are hand-authored SVG, because no screenshot can show
 flow — they also stay legible at any size, theme with the page and carry real text for
 search and screen readers.
 
+## The hero backdrop
+
+`hero-1` ships with the page; `main.js` fetches the frames listed in the `data-slides`
+attribute on `.stage` one at a time after load, and only joins each to the rotation once it
+has decoded. It stops while the tab is hidden or the hero is scrolled away, and under
+`prefers-reduced-motion` it neither animates nor fetches the extra frames at all.
+
+The frames come from `C:\Library\omiverse_project\Renders\website_image`. That folder also
+holds white clay / AO passes, which are skipped: they are far too bright to sit behind light
+text. To swap the set, drop new renders in, regenerate at 2000px wide (WebP `quality=72`,
+JPEG `quality=80`) flattened onto `#0a0c0f`, and list them in `data-slides`. All frames must
+share one aspect ratio or the cross-fade will jump.
+
 To regenerate the screenshot derivatives after replacing a source capture, resize to 1920px
 wide and export both formats (Pillow: `quality=84, method=6` for WebP, `quality=86,
 progressive=True` for JPEG), then update the `width`/`height` attributes in `index.html` so

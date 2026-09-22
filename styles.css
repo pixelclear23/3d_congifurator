@@ -63,11 +63,44 @@ header.site nav a.ghost{border:1px solid var(--line-2);color:var(--text);margin-
 .close{text-align:center}
 .close .intro{margin-left:auto;margin-right:auto}
 
-.glow{
-  position:absolute;inset:-160px 0 auto 0;height:620px;pointer-events:none;z-index:-1;
+/* ---------------------------- hero backdrop ---------------------------
+   RTX stills of the scene, cross-fading behind the copy. Two layers of
+   scrim keep the text contrast intact and hand the lower half of the hero
+   back to the flat page colour, so the screenshot below sits on clean dark
+   rather than on a photo. ---------------------------------------------- */
+.stage,.scrim{position:absolute;inset:0;pointer-events:none}
+.stage{overflow:hidden;z-index:-2}
+.scrim{
+  z-index:-1;
   background:
-    radial-gradient(760px 340px at 22% 0%,rgba(74,163,255,.15),transparent 70%),
-    radial-gradient(620px 300px at 82% 6%,rgba(118,185,0,.09),transparent 70%);
+    linear-gradient(90deg,
+      rgba(10,12,15,.97) 0%,  rgba(10,12,15,.9) 30%,
+      rgba(10,12,15,.55) 60%, rgba(10,12,15,.3) 100%),
+    linear-gradient(180deg,
+      rgba(10,12,15,.72) 0%,  rgba(10,12,15,.14) 15%,
+      rgba(10,12,15,.4) 33%,  rgba(10,12,15,.95) 48%,
+      var(--bg) 58%);
+}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.5s ease-in-out}
+.slide.on{opacity:1}
+.slide img{
+  width:100%;height:100%;object-fit:cover;object-position:62% 42%;
+  transform:scale(1.05);transform-origin:62% 42%;
+}
+/* the drift restarts each time a frame becomes current */
+.slide.on img{animation:drift 9s ease-out both}
+@keyframes drift{from{transform:scale(1.09)}to{transform:scale(1.01)}}
+
+.dots{display:flex;gap:9px;align-items:center;margin-top:26px}
+.dots button{
+  width:26px;height:4px;padding:0;border:0;border-radius:2px;cursor:pointer;
+  background:#2c3641;transition:.25s;
+}
+.dots button:hover{background:#3f4b58}
+.dots button[aria-pressed="true"]{background:var(--accent);width:40px}
+
+@media (prefers-reduced-motion:reduce){
+  .slide img,.slide.on img{animation:none;transform:none}
 }
 
 h1{
