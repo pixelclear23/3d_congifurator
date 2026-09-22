@@ -24,18 +24,26 @@ index.html          the whole page
 styles.css          styles, no framework
 main.js             mobile menu + "current section" nav highlight (optional)
 assets/
-  pipeline.svg      the four stages and the artifact each hands on
-  capture-panel.svg the capture window inside Composer
-  builder-ui.svg    the browser UI builder
-  viewer.svg        the streamed runtime as a customer sees it
-  message-flow.svg  click -> configuratorApply -> handler -> USD -> video
-  data-model.svg    the six captured JSON files and the two generated ones
+  shot-capture.*        the capture tool docked in Omniverse Composer
+  shot-builder.*        the browser UI builder
+  shot-viewer.*         the streamed runtime (also the hero image)
+  shot-viewer-bar.*     detail crop of the runtime's bottom chrome
+  pipeline.svg          the four stages and the artifact each hands on
+  message-flow.svg      click -> configuratorApply -> handler -> USD -> video
+  data-model.svg        the six captured JSON files and the two generated ones
   favicon.svg
 ```
 
-The diagrams are hand-authored SVG rather than screenshots, so they stay legible at any
-size, theme with the page, carry real text for search and screen readers, and cost a few
-kilobytes each.
+Screenshots are real captures, downscaled to 1920px wide and served as WebP with a
+progressive JPEG fallback through `<picture>`; each frame links to the full-size JPEG. The
+three explanatory diagrams are hand-authored SVG, because no screenshot can show a data
+flow — they also stay legible at any size, theme with the page and carry real text for
+search and screen readers.
+
+To regenerate the screenshot derivatives after replacing a source capture, resize to 1920px
+wide and export both formats (Pillow: `quality=84, method=6` for WebP, `quality=86,
+progressive=True` for JPEG), then update the `width`/`height` attributes in `index.html` so
+the space is still reserved before the image loads.
 
 ## Editing
 

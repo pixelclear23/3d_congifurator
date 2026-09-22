@@ -57,6 +57,21 @@
       <li><b>1</b><span>message type on the wire</span></li>
       <li><b>0</b><span>writes to the scene on disk</span></li>
     </ul>
+
+    <figure class="shot wide">
+      <a href="assets/shot-viewer.jpg">
+        <picture>
+          <source srcset="assets/shot-viewer.webp" type="image/webp"/>
+          <img src="assets/shot-viewer.jpg" width="1920" height="1047"
+               fetchpriority="high" decoding="async"
+               alt="The streamed configurator in a browser: a path-traced dark green car on a turntable, with Back View and Interior View pills top left, an Omniverse logo top right, a full-view button, nine paint swatches along the bottom and tabs for environment, car paint, rims, door and lights."/>
+        </picture>
+      </a>
+      <figcaption>
+        The runtime, in a browser. Every pixel of the car is rendered by RTX on the host
+        and streamed; the controls are DOM. <span class="hint">Click any screenshot for full size.</span>
+      </figcaption>
+    </figure>
   </section>
 
   <!-- ============================ OVERVIEW ============================ -->
@@ -119,7 +134,7 @@
       Composer closed.
     </p>
     <figure>
-      <img src="assets/pipeline.svg" alt="Four stages: capture in Composer writes six JSON files; the builder writes ui_config.json; the streamed page sends a configuratorApply message; the Kit extension applies it to the live USD stage and streams frames back."/>
+      <img src="assets/pipeline.svg" loading="lazy" decoding="async" alt="Four stages: capture in Composer writes six JSON files; the builder writes ui_config.json; the streamed page sends a configuratorApply message; the Kit extension applies it to the live USD stage and streams frames back."/>
       <figcaption>The four stages and the artifact each one hands on.</figcaption>
     </figure>
   </section>
@@ -134,9 +149,20 @@
       state to the stage, select its prims, or delete the entry.
     </p>
 
-    <figure>
-      <img src="assets/capture-panel.svg" alt="The capture window: a project folder field, six collapsible capture sections on the left, and a Recorded JSON Data console on the right listing materials, cameras, lights and mesh variants with Apply, Select and delete buttons."/>
-      <figcaption>The capture window. The dotted line marks the button column: every row's actions sit in the same place, whatever the length of its text.</figcaption>
+    <figure class="shot">
+      <a href="assets/shot-capture.jpg">
+        <picture>
+          <source srcset="assets/shot-capture.webp" type="image/webp"/>
+          <img src="assets/shot-capture.jpg" width="1920" height="1164"
+               loading="lazy" decoding="async"
+               alt="Omniverse Composer with the capture tool docked over the viewport. The viewport shows a bright green car on a turntable at 215 frames per second. The tool's left pane has sections one and two expanded, Mesh Variant Capture and Material and Variant Capture, with a material path of /scene/Materials/Carpaint_04 and the status Saved variant Punchy Green to JSON. The right pane lists the recorded variants with Apply, Select and Load buttons in aligned columns."/>
+        </picture>
+      </a>
+      <figcaption>
+        The tool docked in Composer, mid-capture. The stage is the source of truth: the
+        variant that was just saved, <em>Punchy Green</em>, is the paint currently on the car
+        in the viewport.
+      </figcaption>
     </figure>
 
     <h3>What it records</h3>
@@ -204,9 +230,21 @@
       living inside Kit, so pressing Save writes straight into the project folder.
     </p>
 
-    <figure>
-      <img src="assets/builder-ui.svg" alt="The browser UI builder: a live canvas on the left showing view pills, a logo, paint swatches and a tab strip over the car, and an inspector on the right with global options and expandable category cards controlling icon size, labels, shape, dock edge and per-option sounds."/>
-      <figcaption>Authoring the interface against a live preview. Icons and sounds are stored as files under the project's <code>assets/</code>, never inlined into the config.</figcaption>
+    <figure class="shot">
+      <a href="assets/shot-builder.jpg">
+        <picture>
+          <source srcset="assets/shot-builder.webp" type="image/webp"/>
+          <img src="assets/shot-builder.jpg" width="1920" height="1061"
+               loading="lazy" decoding="async"
+               alt="The Configurator Builder page. A toolbar across the top with Edit, Preview and Code tabs and buttons for adding a category, saving to the project, converting icons to files, testing the connection and exporting JSON. The left canvas previews the interface. The right inspector shows global toggles for full view, option text, audio, loading screen and views, then category cards for Camera, Environment and an expanded Car Paint with icon size, labels, shape, dock and per-option rows for Bianco audace, Blu Infinito and Giallo Genio."/>
+        </picture>
+      </a>
+      <figcaption>
+        Authoring the interface against a live preview. <b>Save to Project</b> posts straight
+        into the project folder; <b>Icons to files</b> migrates any inlined image to a real
+        file under <code>assets/</code>; <b>Test Connection</b> confirms which process owns
+        the save port before you trust a save.
+      </figcaption>
     </figure>
 
     <h3>The five steps</h3>
@@ -238,9 +276,21 @@
       3D side. Empty space passes clicks through to the stream, so the model still orbits.
     </p>
 
-    <figure>
-      <img src="assets/viewer.svg" alt="The streamed configurator: a rendered car on a turntable filling the page, with a title, view pills, an Omniverse logo, a full view button, a row of paint swatches and a tab strip for environment, car paint, rims, door and lights."/>
-      <figcaption>The runtime page. Two layouts ship: a tabbed bottom bar, and free-placed chips positioned by percentage.</figcaption>
+    <figure class="shot">
+      <a href="assets/shot-viewer.jpg">
+        <picture>
+          <source srcset="assets/shot-viewer-bar.webp" type="image/webp"/>
+          <img src="assets/shot-viewer-bar.jpg" width="1600" height="225"
+               loading="lazy" decoding="async"
+               alt="Detail of the runtime's bottom chrome: a stylised MC20 wordmark on the left, then nine circular paint swatches with their names underneath — Bianco audace, Blu Infinito, Giallo Genio, Grigio Incognito, Grigio Mistero, Mint Green, Punchy Green, Nero Essenza and Rosso Vincente — above a tab strip reading environment, car paint, rims, door and lights."/>
+        </picture>
+      </a>
+      <figcaption>
+        The bottom chrome in detail. Swatch colours are derived from the recorded diffuse
+        values, so a newly captured paint arrives with the right chip without anyone picking
+        a hex code. Two layouts ship: this tabbed bar, and free-placed chips positioned by
+        percentage.
+      </figcaption>
     </figure>
 
     <h3>The whole browser-side contract</h3>
@@ -276,7 +326,7 @@ Configurator.send('exit_view', '');            // leave the view, restore the ca
     </p>
 
     <figure>
-      <img src="assets/message-flow.svg" alt="A click in the overlay becomes a configuratorApply message over the WebRTC data channel, is republished on the Kit message bus, dispatched by the extension to one of seven handlers, and written into the USD session layer; frames return as video."/>
+      <img src="assets/message-flow.svg" loading="lazy" decoding="async" alt="A click in the overlay becomes a configuratorApply message over the WebRTC data channel, is republished on the Kit message bus, dispatched by the extension to one of seven handlers, and written into the USD session layer; frames return as video."/>
       <figcaption>From click to pixel. The browser sends a name; the resolution happens in Kit.</figcaption>
     </figure>
 
@@ -335,7 +385,7 @@ Configurator.send('exit_view', '');            // leave the view, restore the ca
       hand, and the only thing the four parts agree on.
     </p>
     <figure>
-      <img src="assets/data-model.svg" alt="The six captured JSON files with their shapes — materials, meshes, animations, cameras, environments and lights — feeding the generated ui_config.json and captured_data.json."/>
+      <img src="assets/data-model.svg" loading="lazy" decoding="async" alt="The six captured JSON files with their shapes — materials, meshes, animations, cameras, environments and lights — feeding the generated ui_config.json and captured_data.json."/>
       <figcaption>The six captured files, and the two generated from them.</figcaption>
     </figure>
   </section>
@@ -430,8 +480,8 @@ Configurator.send('exit_view', '');            // leave the view, restore the ca
       interface is the next piece of work.
     </p>
     <p class="note small">
-      The car model is a third-party asset used for testing only; it is not part of this
-      toolkit and is not redistributed here.
+      The car model shown in the screenshots is a third-party asset used for testing only.
+      It is not part of this toolkit and is not redistributed here.
     </p>
   </section>
 

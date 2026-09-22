@@ -146,6 +146,15 @@ figcaption{
   padding:13px 18px;font-size:13px;color:var(--text-mute);
   border-top:1px solid var(--line);background:#0d1114;
 }
+figcaption b,figcaption em{color:var(--text-dim)}
+figcaption code{font-size:12.5px}
+
+/* screenshots: the whole frame is the link to the full-size file */
+figure.shot a{display:block;line-height:0}
+figure.shot img{width:100%;background:#0b0d10}
+figure.shot a:hover img{opacity:.92}
+figure.shot.wide{margin-top:46px;border-color:var(--line-2)}
+.hint{color:#5a6470}
 
 /* ---------------- definition list ---------------- */
 .defs{
