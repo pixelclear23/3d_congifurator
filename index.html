@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>3D Configurator Toolkit — capture, author and stream an RTX configurator</title>
+<meta name="description" content="A toolkit for building real-time 3D configurators on NVIDIA Omniverse Kit: record states from a USD stage, author the interface in a browser, stream the RTX render and drive it with one message."/>
+<meta name="color-scheme" content="dark"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="styles.css"/>
+<meta property="og:title" content="3D Configurator Toolkit"/>
+<meta property="og:description" content="Capture states from a USD stage, author the UI in a browser, stream the RTX render, drive it with one message."/>
+<meta property="og:type" content="website"/>
+</head>
+<body>
+<a class="skip" href="#overview">Skip to content</a>
+
+<header class="site">
+  <a class="brand" href="#top">
+    <span class="mark" aria-hidden="true"></span>
+    <span>Configurator&nbsp;Toolkit</span>
+  </a>
+  <button class="navtoggle" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav id="nav" aria-label="Sections">
+    <a href="#overview">Overview</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#capture">Capture</a>
+    <a href="#builder">Builder</a>
+    <a href="#runtime">Runtime</a>
+    <a href="#extension">Extension</a>
+    <a href="#data">Data</a>
+    <a href="#notes">Notes</a>
+    <a class="ghost" href="https://github.com/pixelclear23/3d_congifurator" rel="noopener">GitHub</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero">
+    <p class="eyebrow">NVIDIA Omniverse Kit · OpenUSD · WebRTC</p>
+    <h1>A configurator you record, instead of one you code.</h1>
+    <p class="lede">
+      Four parts that share one folder of JSON. An artist records the states a scene can be
+      in, straight from the stage they are already working in. A browser page lays out the
+      interface over the render. A Kit extension applies each choice to the live USD stage,
+      and the RTX frames stream back to the same page. No geometry is shipped to the
+      browser, and no scene file is ever modified.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#pipeline">How it fits together</a>
+      <a class="btn" href="https://github.com/pixelclear23/3d_congifurator" rel="noopener">Source on GitHub</a>
+    </div>
+    <ul class="stats">
+      <li><b>4</b><span>parts: capture, builder, runtime, extension</span></li>
+      <li><b>6</b><span>JSON files, the whole contract</span></li>
+      <li><b>1</b><span>message type on the wire</span></li>
+      <li><b>0</b><span>writes to the scene on disk</span></li>
+    </ul>
+  </section>
+
+  <!-- ============================ OVERVIEW ============================ -->
+  <section id="overview" class="band">
+    <h2>What it is</h2>
+    <p class="intro">
+      Most product configurators are hand-built per project: someone re-authors the
+      materials, re-rigs the doors, re-implements the camera moves and then writes the UI
+      twice. This toolkit removes that step. The scene an artist already lit and shaded is
+      the source of truth — the tooling reads state out of it and plays state back into it.
+    </p>
+
+    <div class="cards">
+      <article class="card">
+        <h3>1 · Capture</h3>
+        <p>
+          A panel inside Omniverse Composer. Select prims, name the state, press capture.
+          It records materials, geometry variants, part animations, cameras, environment
+          sets and light groups as JSON.
+        </p>
+        <p class="file">configurator_toolkit/capture_states.py</p>
+      </article>
+      <article class="card">
+        <h3>2 · Author</h3>
+        <p>
+          A five-step launcher in Kit plus a builder page in the browser. Place category
+          chips, pick icons and shapes, attach sounds, choose which edge each group docks
+          to, then save back into the project.
+        </p>
+        <p class="file">builder_ui.py · build_ui_config.py</p>
+      </article>
+      <article class="card">
+        <h3>3 · Stream</h3>
+        <p>
+          The customer-facing page: an RTX video stream filling the window with plain DOM
+          chrome on top. Editable HTML, CSS and JS per project, so a client's brand does
+          not fight the tool.
+        </p>
+        <p class="file">overlay_default/overlay.{html,css,js}</p>
+      </article>
+      <article class="card">
+        <h3>4 · Apply</h3>
+        <p>
+          A Kit extension inside the streaming app. It receives one message type, resolves
+          it against the captured JSON and writes the live stage — into the session layer,
+          so nothing is persisted.
+        </p>
+        <p class="file">gokul.configurator.core</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================ PIPELINE ============================ -->
+  <section id="pipeline" class="band alt">
+    <h2>The pipeline</h2>
+    <p class="intro">
+      Each stage hands the next one a file, never a live object. That is the reason any
+      stage can be re-run on its own: re-capture a door without touching the UI, restyle
+      the UI without re-opening Composer, or ship a launcher that runs the whole thing with
+      Composer closed.
+    </p>
+    <figure>
+      <img src="assets/pipeline.svg" alt="Four stages: capture in Composer writes six JSON files; the builder writes ui_config.json; the streamed page sends a configuratorApply message; the Kit extension applies it to the live USD stage and streams frames back."/>
+      <figcaption>The four stages and the artifact each one hands on.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============================ CAPTURE ============================ -->
+  <section id="capture" class="band">
+    <h2>1 · The capture tool</h2>
+    <p class="intro">
+      A two-pane window that runs inside Composer. The left pane is six capture sections.
+      The right pane is a live console over the JSON on disk — every row reads back from
+      the file, so what you see is the data, not a copy of it. Each row can re-apply the
+      state to the stage, select its prims, or delete the entry.
+    </p>
+
+    <figure>
+      <img src="assets/capture-panel.svg" alt="The capture window: a project folder field, six collapsible capture sections on the left, and a Recorded JSON Data console on the right listing materials, cameras, lights and mesh variants with Apply, Select and delete buttons."/>
+      <figcaption>The capture window. The dotted line marks the button column: every row's actions sit in the same place, whatever the length of its text.</figcaption>
+    </figure>
+
+    <h3>What it records</h3>
+    <dl class="defs">
+      <div>
+        <dt>Mesh variants</dt>
+        <dd>
+          Geometry swapped by visibility, scoped to a <em>group</em>, so a wheel swap cannot
+          disturb a seat swap. The set of prims to hide is derived from the data rather than
+          remembered, which makes it correct on the first click and self-correcting after
+          any manual change in the stage.
+        </dd>
+      </div>
+      <div>
+        <dt>Material variants</dt>
+        <dd>
+          Every shader input on the material and its descendants, recorded by name and
+          value. Options are part-scoped (<code>Carpaint :: Rosso Vincente</code>) so paint,
+          rims and calipers change independently.
+        </dd>
+      </div>
+      <div>
+        <dt>Part animations</dt>
+        <dd>
+          Sampled frame by frame across a range, so the runtime needs no rig, no OmniGraph
+          and no timeline — it writes the recorded pose. A part can also be a switch, with
+          its own off range.
+        </dd>
+      </div>
+      <div>
+        <dt>Cameras and views</dt>
+        <dd>
+          Static cameras keep focal length, focus distance and f-stop. Cinematic cameras
+          keep a key per frame and fly through them at the stage frame rate. A view can
+          also carry <em>conditions</em>: lights to turn on, parts to pose, materials to
+          switch — each recorded as an explicit on/off pair, because a material has no
+          derivable inverse.
+        </dd>
+      </div>
+      <div>
+        <dt>Environment sets</dt>
+        <dd>
+          Which prims a set turns on, plus dome intensity, exposure and HDR texture where
+          they exist. Applying one set hides the prims the other sets own, so sets replace
+          each other instead of stacking.
+        </dd>
+      </div>
+      <div>
+        <dt>Light groups</dt>
+        <dd>
+          Visibility plus how the light was tuned — intensity, exposure, colour, colour
+          temperature. Visibility alone loses the look the artist set. Groups can also pair
+          emissive material variants, so switching headlights on lights the lenses too.
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ============================ BUILDER ============================ -->
+  <section id="builder" class="band alt">
+    <h2>2 · The UI builder</h2>
+    <p class="intro">
+      The captured JSON says what the scene <em>can</em> do. This says what the customer
+      gets to choose. It runs as a page in the browser, driven by a small aiohttp endpoint
+      living inside Kit, so pressing Save writes straight into the project folder.
+    </p>
+
+    <figure>
+      <img src="assets/builder-ui.svg" alt="The browser UI builder: a live canvas on the left showing view pills, a logo, paint swatches and a tab strip over the car, and an inspector on the right with global options and expandable category cards controlling icon size, labels, shape, dock edge and per-option sounds."/>
+      <figcaption>Authoring the interface against a live preview. Icons and sounds are stored as files under the project's <code>assets/</code>, never inlined into the config.</figcaption>
+    </figure>
+
+    <h3>The five steps</h3>
+    <ol class="steps">
+      <li><b>Capture States</b> — opens the capture tool on the folder already loaded here.</li>
+      <li><b>Create Web Builder</b> — installs the web client into the project folder, once per project.</li>
+      <li><b>Web Builder</b> — authors the interface and saves <code>ui_config.json</code>.</li>
+      <li><b>Launch Preview</b> — streams the scene currently open in Composer with that interface over it.</li>
+      <li><b>Create Launch .bat</b> — bakes scene, resolution and renderer into a double-clickable launcher that runs with Composer closed.</li>
+    </ol>
+
+    <h3>What it generates</h3>
+    <ul class="grid2">
+      <li><code>ui_config.json</code> — categories, options, icons, docks, theme, audio, splash.</li>
+      <li><code>captured_data.json</code> — the six files bundled for the browser.</li>
+      <li><code>overlay.html / .css / .js</code> — per-project, editable, seeded from the defaults.</li>
+      <li><code>configurator_builder.html</code> — the builder page itself.</li>
+      <li><code>launch_configurator.bat</code> — the standalone launcher.</li>
+      <li><code>assets/</code> — uploaded icons, logos and sounds, mirrored into the web client.</li>
+    </ul>
+  </section>
+
+  <!-- ============================ RUNTIME ============================ -->
+  <section id="runtime" class="band">
+    <h2>3 · The streamed runtime</h2>
+    <p class="intro">
+      What the customer opens. The RTX render fills the window as video; everything else is
+      ordinary DOM on top, which is why it can be restyled per client without touching the
+      3D side. Empty space passes clicks through to the stream, so the model still orbits.
+    </p>
+
+    <figure>
+      <img src="assets/viewer.svg" alt="The streamed configurator: a rendered car on a turntable filling the page, with a title, view pills, an Omniverse logo, a full view button, a row of paint swatches and a tab strip for environment, car paint, rims, door and lights."/>
+      <figcaption>The runtime page. Two layouts ship: a tabbed bottom bar, and free-placed chips positioned by percentage.</figcaption>
+    </figure>
+
+    <h3>The whole browser-side contract</h3>
+    <pre><code>// pick a swatch -> drive the render
+Configurator.send('materials', 'Carpaint :: Rosso Vincente');
+Configurator.send('meshes',    'Bathroom tub :: variant2');
+Configurator.send('cameras',   'Interior View');
+Configurator.send('exit_view', '');            // leave the view, restore the car</code></pre>
+    <p class="note">
+      That is the entire API. Replace <code>overlay.js</code> with your own UI and call the
+      same function — the rest of the toolkit does not change.
+    </p>
+
+    <h3>Details that matter in the room</h3>
+    <ul class="grid2">
+      <li><b>Loading screen</b> that stays up until the stream is genuinely live: a video with real dimensions, visible, and with a clock that is actually advancing — four consecutive good polls, not one.</li>
+      <li><b>Audio in frames, not milliseconds.</b> A door thunk is authored as "18 frames in", converted against the stage frame rate, so it lands at the same point in the swing on any machine.</li>
+      <li><b>Four audio layers</b>: a one-shot on launch, a bed that loops once the one-shot hands over, global click feedback, and per-option sounds with separate open and close cues.</li>
+      <li><b>The Launch button doubles as the gesture</b> browsers require before audio may play, which is why music starts there and not on load.</li>
+      <li><b>Side docks</b> collapse to their name and expand one at a time per edge, because a narrow column with two open lists runs off the screen.</li>
+      <li><b>Icon-only chips</b> keep their text as tooltip and <code>aria-label</code>, and only drop the label when an icon actually exists.</li>
+    </ul>
+  </section>
+
+  <!-- ============================ EXTENSION ============================ -->
+  <section id="extension" class="band alt">
+    <h2>4 · The Kit extension</h2>
+    <p class="intro">
+      The only part that touches USD at runtime. It subscribes to one event type on the Kit
+      message bus, resolves the value against the captured JSON and writes the stage. Every
+      write goes into the <b>session layer</b>, so the file on disk is never modified and
+      restarting the app is a full reset.
+    </p>
+
+    <figure>
+      <img src="assets/message-flow.svg" alt="A click in the overlay becomes a configuratorApply message over the WebRTC data channel, is republished on the Kit message bus, dispatched by the extension to one of seven handlers, and written into the USD session layer; frames return as video."/>
+      <figcaption>From click to pixel. The browser sends a name; the resolution happens in Kit.</figcaption>
+    </figure>
+
+    <div class="tablewrap">
+      <table>
+        <caption>The dispatch table</caption>
+        <thead>
+          <tr><th scope="col">Message type</th><th scope="col">What it does</th><th scope="col">Worth knowing</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>materials</code></td>
+            <td>Writes every recorded shader input on the material and its descendants.</td>
+            <td>Guarded per parameter: one bad value skips itself instead of half-applying the paint. Vector arity is checked, because two shader nodes under one material can expose the same input name with different types.</td>
+          </tr>
+          <tr>
+            <td><code>cameras</code></td>
+            <td>Switches the viewport camera, applies the view's conditions, and flies a recorded camera move.</td>
+            <td>Leaving one view undoes it before entering the next, so states never stack. The move is timed against the wall clock, not one frame per tick, so it lasts the same on a fast machine.</td>
+          </tr>
+          <tr>
+            <td><code>animations</code></td>
+            <td>Walks the recorded frames forward to open, reversed to close.</td>
+            <td>Toggles by name, so the same chip opens and closes.</td>
+          </tr>
+          <tr>
+            <td><code>lights</code></td>
+            <td>Restores the recorded values, toggles visibility, applies the emissive pairs.</td>
+            <td>Values are only restored on the way on: an invisible light contributes nothing, so there is no inverse to record.</td>
+          </tr>
+          <tr>
+            <td><code>environments</code></td>
+            <td>Shows one set and hides the prims owned by the others.</td>
+            <td>The hide-set is derived from the data, so it is right on the first click with no memory of a previous state.</td>
+          </tr>
+          <tr>
+            <td><code>meshes</code></td>
+            <td>Shows one variant of a group, hides that group's other variants.</td>
+            <td>A prim shared by two variants stays visible. <code>Group :: None</code> hides all of them, for an optional part.</td>
+          </tr>
+          <tr>
+            <td><code>exit_view</code></td>
+            <td>Reverts everything the current view switched on and returns to the free camera.</td>
+            <td>Cancels a camera move still in flight, so two animations never fight over the prim.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================ DATA ============================ -->
+  <section id="data" class="band">
+    <h2>The data model</h2>
+    <p class="intro">
+      Six files, flat in the project folder, indented JSON. Readable in a diff, editable by
+      hand, and the only thing the four parts agree on.
+    </p>
+    <figure>
+      <img src="assets/data-model.svg" alt="The six captured JSON files with their shapes — materials, meshes, animations, cameras, environments and lights — feeding the generated ui_config.json and captured_data.json."/>
+      <figcaption>The six captured files, and the two generated from them.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============================ NOTES ============================ -->
+  <section id="notes" class="band alt">
+    <h2>Engineering notes</h2>
+    <p class="intro">
+      The parts of the job that took the longest were not the features. These are the
+      failures that shaped the design.
+    </p>
+
+    <div class="cards notes">
+      <article class="card">
+        <h3>The stream must be headless</h3>
+        <p>
+          With an OS window, Windows clamps it to the desktop work area — a requested
+          2560×1440 becomes 2517×1440 — and the livestream plugin then rejects
+          <em>every</em> frame, because the resolution no longer matches what the client
+          connected with. The page stays black forever while the log cheerfully reports
+          "RTX ready". <code>--no-window</code> takes the window manager out of the path.
+        </p>
+      </article>
+      <article class="card">
+        <h3>One encoder, one owner</h3>
+        <p>
+          If Composer is running with streaming extensions enabled it already holds the
+          ports, and the app dies with <code>NVST_R_BUSY</code> behind a black video. The
+          launcher checks the three ports up front and names the process holding them,
+          instead of leaving that to be debugged. <code>NVST_R_FRAME_DROPPED</code>, by
+          contrast, is just load and is safe to ignore.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Never trust <code>__file__</code></h3>
+        <p>
+          Omniverse's Script Editor copies your buffer to a temp file before running it, so
+          <code>__file__</code> points at <code>%TEMP%</code> and every "sibling of this
+          script" lookup silently lands in the wrong folder. The toolkit directory is
+          resolved by looking for known marker files, not assumed.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Deferred UI needs deferred data</h3>
+        <p>
+          The capture window builds its widgets lazily through a build callback, so setting
+          a field right after constructing the window writes to nothing and is then
+          overwritten. The project folder is therefore injected into the script's namespace
+          <em>before</em> it runs, and read during the build.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Record the inverse, don't guess it</h3>
+        <p>
+          Lights invert to off and an animation has a closed frame, but a material has no
+          derivable opposite. So a material condition is stored as an explicit
+          <code>{on, off}</code> pair, and a half-filled pair is refused at capture time —
+          applying one direction with no way back is worse than not wiring it at all.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Derive state, don't remember it</h3>
+        <p>
+          Environment sets and mesh variants both work out what to hide from the data every
+          time, rather than tracking what was applied last. That is correct on the first
+          click in a freshly started app, and it self-corrects after anyone changes
+          visibility by hand in the stage.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================ SCENE / DEMO ============================ -->
+  <section id="demo" class="band">
+    <h2>The scene it was built against</h2>
+    <p class="intro">
+      A car was the test case, not the point. It is a useful one because it exercises
+      everything at once: 175 meshes and roughly 287k faces, 65 materials across
+      UsdPreviewSurface and MDL, 9 lights, 6 cameras, doors driven by OmniGraph rather than
+      keyframes, and no USD variant sets at all — which is exactly why variants are
+      captured as prim visibility instead.
+    </p>
+    <ul class="grid2">
+      <li><b>Paint</b> — nine variants, each a full set of shader inputs, with swatch colours derived from the recorded diffuse values.</li>
+      <li><b>Rims and calipers</b> — separate part-scoped material categories, changed independently of the body.</li>
+      <li><b>Doors</b> — sampled frame by frame, so the runtime reproduces them without the graph that authored them.</li>
+      <li><b>Views</b> — a static hero camera and a cinematic interior move that also opens a door and switches a light.</li>
+    </ul>
+    <p class="note">
+      Live streaming is one interactive viewer per Kit instance, so the RTX demo runs by
+      arrangement rather than as a public link. A self-contained WebGL build of the same
+      interface is the next piece of work.
+    </p>
+    <p class="note small">
+      The car model is a third-party asset used for testing only; it is not part of this
+      toolkit and is not redistributed here.
+    </p>
+  </section>
+
+  <!-- ============================ STACK ============================ -->
+  <section id="stack" class="band alt">
+    <h2>Stack</h2>
+    <ul class="tags">
+      <li>Python 3.12</li><li>NVIDIA Omniverse Kit</li><li>OpenUSD</li><li>omni.ui</li>
+      <li>Kit extensions</li><li>RTX · path tracing &amp; DLSS</li><li>WebRTC livestream</li>
+      <li>aiohttp</li><li>Vanilla JS</li><li>Vite</li><li>Windows batch</li>
+    </ul>
+    <div class="cards">
+      <article class="card">
+        <h3>Repository</h3>
+        <p>The toolkit, the Kit extension and this site.</p>
+        <p><a class="btn small" href="https://github.com/pixelclear23/3d_congifurator" rel="noopener">github.com/pixelclear23</a></p>
+      </article>
+      <article class="card">
+        <h3>See it running</h3>
+        <p>
+          The streamed build is 1:1 by nature. Open an issue on the repository to arrange a
+          session, or to ask about a specific part of the pipeline.
+        </p>
+        <p><a class="btn small" href="https://github.com/pixelclear23/3d_congifurator/issues/new" rel="noopener">Request a session</a></p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Built with Omniverse Kit, OpenUSD and rather a lot of log reading.</p>
+  <p class="small">Diagrams on this page are hand-authored SVG. NVIDIA, Omniverse and RTX are trademarks of NVIDIA Corporation.</p>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

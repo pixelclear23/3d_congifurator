@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 660" width="1060" height="660"
+     role="img" aria-labelledby="capTitle capDesc"
+     font-family="Segoe UI, system-ui, sans-serif">
+  <title id="capTitle">The capture window inside Omniverse Composer</title>
+  <desc id="capDesc">A two pane tool window. The left pane holds a project folder field and six collapsible capture sections: mesh variants, materials, animations, cameras, environments and light groups. The right pane lists the recorded JSON with one aligned column of Apply, Select and delete buttons per row.</desc>
+
+  <rect width="1060" height="660" fill="#0e1013"/>
+
+  <!-- window chrome -->
+  <rect x="16" y="16" width="1028" height="628" rx="10" fill="#14181d" stroke="#2a323c"/>
+  <rect x="16" y="16" width="1028" height="34" rx="10" fill="#1b2128"/>
+  <rect x="16" y="42" width="1028" height="8" fill="#1b2128"/>
+  <text x="34" y="38" font-size="12.5" font-weight="600" fill="#c7d0da">Configurator State Capture</text>
+  <g fill="#6b7682"><circle cx="1004" cy="33" r="4"/><circle cx="1020" cy="33" r="4"/></g>
+
+  <!-- ===== LEFT PANE ===== -->
+  <text x="36" y="80" font-size="15" font-weight="700" fill="#e6edf3">Configurator Builder Tool</text>
+
+  <text x="36" y="108" font-size="11" fill="#9aa4b0">Project Folder:</text>
+  <rect x="36" y="116" width="420" height="22" rx="4" fill="#0f1317" stroke="#333c47"/>
+  <text x="44" y="131" font-size="10.5" fill="#8b95a1">C:\…\Renders\Configurator</text>
+  <rect x="462" y="116" width="22" height="22" rx="4" fill="#2f6b3a"/>
+  <text x="473" y="131" text-anchor="middle" font-size="12" fill="#dff3e2">+</text>
+  <rect x="490" y="116" width="28" height="22" rx="4" fill="#2d5f8f"/>
+  <text x="504" y="131" text-anchor="middle" font-size="11" fill="#dbe9f7">…</text>
+
+  <!-- section 1 open -->
+  <g>
+    <rect x="36" y="152" width="482" height="150" rx="6" fill="#171c22" stroke="#2a323c"/>
+    <text x="48" y="170" font-size="11.5" font-weight="700" fill="#cfd8e2">▼  1. Mesh Variant Capture</text>
+    <text x="48" y="192" font-size="10" fill="#8b95a1">Group (the object that swaps, e.g. Bathroom tub):</text>
+    <rect x="48" y="198" width="430" height="20" rx="4" fill="#0f1317" stroke="#333c47"/>
+    <text x="56" y="212" font-size="10" fill="#c7d0da">Bathroom tub</text>
+    <rect x="482" y="198" width="20" height="20" rx="4" fill="#232a32" stroke="#333c47"/>
+    <text x="492" y="212" text-anchor="middle" font-size="8" fill="#9aa4b0">▼</text>
+    <text x="48" y="234" font-size="10" fill="#8b95a1">Variant name (e.g. variant1):</text>
+    <rect x="48" y="240" width="454" height="20" rx="4" fill="#0f1317" stroke="#333c47"/>
+    <text x="56" y="254" font-size="10" fill="#c7d0da">variant1</text>
+    <rect x="48" y="268" width="454" height="24" rx="5" fill="#2f6b3a"/>
+    <text x="275" y="284" text-anchor="middle" font-size="11" font-weight="600" fill="#e8f6ea">Capture Mesh Variant</text>
+  </g>
+
+  <!-- collapsed sections -->
+  <g font-size="11.5" font-weight="700" fill="#cfd8e2">
+    <rect x="36" y="312" width="482" height="30" rx="6" fill="#171c22" stroke="#2a323c"/>
+    <text x="48" y="332">▸  2. Material &amp; Variant Capture</text>
+    <rect x="36" y="350" width="482" height="30" rx="6" fill="#171c22" stroke="#2a323c"/>
+    <text x="48" y="370">▸  3. Interaction &amp; Animation Capture</text>
+    <rect x="36" y="388" width="482" height="30" rx="6" fill="#171c22" stroke="#2a323c"/>
+    <text x="48" y="408">▸  4. Camera &amp; Cinematic View Capture</text>
+    <rect x="36" y="426" width="482" height="30" rx="6" fill="#171c22" stroke="#2a323c"/>
+    <text x="48" y="446">▸  5. Environment &amp; Set Capture</text>
+    <rect x="36" y="464" width="482" height="30" rx="6" fill="#171c22" stroke="#2a323c"/>
+    <text x="48" y="484">▸  6. Light Group Capture</text>
+  </g>
+
+  <g font-size="10" fill="#6b7682">
+    <text x="36" y="524">Select prims in the stage, name the state, press capture.</text>
+    <text x="36" y="542">Each section appends to one JSON file in the project folder.</text>
+  </g>
+
+  <!-- divider -->
+  <line x1="534" y1="60" x2="534" y2="636" stroke="#232a32"/>
+
+  <!-- ===== RIGHT PANE ===== -->
+  <rect x="552" y="66" width="476" height="562" rx="8" fill="#1a1e23" stroke="#2a323c"/>
+  <text x="568" y="92" font-size="13.5" font-weight="700" fill="#e6edf3">Recorded JSON Data</text>
+  <rect x="948" y="78" width="66" height="22" rx="4" fill="#2b3239" stroke="#3a434e"/>
+  <text x="981" y="93" text-anchor="middle" font-size="10.5" fill="#c7d0da">Refresh</text>
+  <text x="568" y="112" font-size="9.5" fill="#6b7682">Project: C:\Library\omiverse_project\Renders\Configurator</text>
+
+  <text x="568" y="140" font-size="11.5" font-weight="700" fill="#cfd8e2">▼  MATERIALS</text>
+
+  <!-- the aligned button column -->
+  <line x1="866" y1="150" x2="866" y2="600" stroke="#4aa3ff" stroke-opacity=".22" stroke-dasharray="3 4"/>
+
+  <!-- variant group 1 -->
+  <g font-size="11">
+    <text x="572" y="168" fill="#e6edf3" font-weight="600">Bianco audace</text>
+    <text x="876" y="168" fill="#7fd48f">Apply</text><text x="926" y="168" fill="#8fd0ff">Select</text><text x="978" y="168" fill="#e26a6a">×</text>
+
+    <text x="584" y="192" fill="#9aa4b0">- Carpaint (168 params) -&gt; Carpaint_04</text>
+    <text x="876" y="192" fill="#8fd0ff">Load</text><text x="978" y="192" fill="#e26a6a">×</text>
+
+    <text x="584" y="214" fill="#9aa4b0">- Brakes (21 params) -&gt; vehicle_generi…</text>
+    <text x="876" y="214" fill="#8fd0ff">Load</text><text x="978" y="214" fill="#e26a6a">×</text>
+
+    <text x="584" y="236" fill="#9aa4b0">- Wheel_Rim (20 params) -&gt; wheel1a_d</text>
+    <text x="876" y="236" fill="#8fd0ff">Load</text><text x="978" y="236" fill="#e26a6a">×</text>
+  </g>
+
+  <!-- variant group 2 -->
+  <g font-size="11">
+    <text x="572" y="270" fill="#e6edf3" font-weight="600">Blu Infinito</text>
+    <text x="876" y="270" fill="#7fd48f">Apply</text><text x="926" y="270" fill="#8fd0ff">Select</text><text x="978" y="270" fill="#e26a6a">×</text>
+    <text x="584" y="294" fill="#9aa4b0">- Carpaint (168 params) -&gt; Carpaint_04</text>
+    <text x="876" y="294" fill="#8fd0ff">Load</text><text x="978" y="294" fill="#e26a6a">×</text>
+    <text x="584" y="316" fill="#9aa4b0">- Brakes (21 params) -&gt; vehicle_generi…</text>
+    <text x="876" y="316" fill="#8fd0ff">Load</text><text x="978" y="316" fill="#e26a6a">×</text>
+  </g>
+
+  <text x="568" y="358" font-size="11.5" font-weight="700" fill="#cfd8e2">▼  CAMERAS</text>
+  <g font-size="11">
+    <text x="572" y="384" fill="#9aa4b0">★ Hero View (Static) [Default]</text>
+    <text x="876" y="384" fill="#5f6b78">Play</text><text x="921" y="384" fill="#8fd0ff">View</text>
+    <text x="966" y="384" fill="#8fd0ff">Load</text><text x="1010" y="384" fill="#e26a6a">×</text>
+    <text x="572" y="406" fill="#9aa4b0">  Interior View (Cinematic 1-69) [1 lig…</text>
+    <text x="876" y="406" fill="#7fd48f">Play</text><text x="921" y="406" fill="#8fd0ff">View</text>
+    <text x="966" y="406" fill="#8fd0ff">Load</text><text x="1010" y="406" fill="#e26a6a">×</text>
+  </g>
+
+  <text x="568" y="448" font-size="11.5" font-weight="700" fill="#cfd8e2">▼  LIGHTS</text>
+  <g font-size="11">
+    <text x="572" y="474" fill="#9aa4b0">  Head Lights (3 light(s), 1 material co…</text>
+    <text x="876" y="474" fill="#7fd48f">On</text><text x="926" y="474" fill="#8fd0ff">Select</text><text x="978" y="474" fill="#e26a6a">×</text>
+    <text x="584" y="496" fill="#8b95a1">  - on: Lens :: Head_On   off: Lens :: He…</text>
+  </g>
+
+  <text x="568" y="538" font-size="11.5" font-weight="700" fill="#cfd8e2">▼  MESH VARIANTS</text>
+  <g font-size="11">
+    <text x="572" y="564" fill="#e6edf3">  Bathroom tub (2 variants)</text>
+    <text x="584" y="586" fill="#9aa4b0">  variant1 (7 prims)  (default)</text>
+    <text x="876" y="586" fill="#7fd48f">Apply</text><text x="926" y="586" fill="#8fd0ff">Select</text>
+    <text x="972" y="586" fill="#b8c2cd">Def</text><text x="1010" y="586" fill="#e26a6a">×</text>
+  </g>
+
+  <text x="568" y="620" font-size="9.5" fill="#5f6b78">Every row reads back from disk: the console is the JSON, not a copy of it.</text>
+</svg>

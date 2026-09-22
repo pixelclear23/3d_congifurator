@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 400" width="1220" height="400"
+     role="img" aria-labelledby="pipeTitle pipeDesc"
+     font-family="Segoe UI, system-ui, sans-serif">
+  <title id="pipeTitle">The four stages of the configurator toolkit</title>
+  <desc id="pipeDesc">Stage 1, capture states in Omniverse Composer, writes six JSON files. Stage 2, the web builder, writes ui_config.json. Stage 3, the streamed page, sends one message called configuratorApply. Stage 4, the Kit extension, applies it to the live USD stage in the session layer and streams RTX frames back.</desc>
+
+  <defs>
+    <linearGradient id="pgAccent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4aa3ff" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#4aa3ff" stop-opacity=".25"/>
+    </linearGradient>
+    <marker id="pArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4aa3ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1220" height="400" fill="#0e1013"/>
+
+  <!-- stage cards -->
+  <g>
+    <!-- 1 -->
+    <rect x="24" y="96" width="262" height="196" rx="12" fill="#171c22" stroke="#2a323c"/>
+    <circle cx="52" cy="126" r="15" fill="#4aa3ff" fill-opacity=".14" stroke="#4aa3ff"/>
+    <text x="52" y="131" text-anchor="middle" font-size="14" font-weight="700" fill="#4aa3ff">1</text>
+    <text x="78" y="124" font-size="15" font-weight="700" fill="#e6edf3">Capture</text>
+    <text x="78" y="142" font-size="11.5" fill="#7d8896">capture_states.py · in Composer</text>
+    <text x="44" y="174" font-size="12" fill="#9aa4b0">Record from the open stage:</text>
+    <text x="44" y="196" font-size="12" fill="#c7d0da">materials · mesh variants</text>
+    <text x="44" y="216" font-size="12" fill="#c7d0da">animations · cameras</text>
+    <text x="44" y="236" font-size="12" fill="#c7d0da">environments · light groups</text>
+    <text x="44" y="266" font-size="11.5" fill="#7d8896">Nothing is authored by hand.</text>
+
+    <!-- 2 -->
+    <rect x="336" y="96" width="262" height="196" rx="12" fill="#171c22" stroke="#2a323c"/>
+    <circle cx="364" cy="126" r="15" fill="#4aa3ff" fill-opacity=".14" stroke="#4aa3ff"/>
+    <text x="364" y="131" text-anchor="middle" font-size="14" font-weight="700" fill="#4aa3ff">2</text>
+    <text x="390" y="124" font-size="15" font-weight="700" fill="#e6edf3">Author</text>
+    <text x="390" y="142" font-size="11.5" fill="#7d8896">builder_ui.py + browser builder</text>
+    <text x="356" y="174" font-size="12" fill="#9aa4b0">Lay out the interface:</text>
+    <text x="356" y="196" font-size="12" fill="#c7d0da">categories, icons, docks</text>
+    <text x="356" y="216" font-size="12" fill="#c7d0da">labels, shapes, sounds</text>
+    <text x="356" y="236" font-size="12" fill="#c7d0da">loading screen, logos</text>
+    <text x="356" y="266" font-size="11.5" fill="#7d8896">Saved over localhost:8011.</text>
+
+    <!-- 3 -->
+    <rect x="648" y="96" width="262" height="196" rx="12" fill="#171c22" stroke="#2a323c"/>
+    <circle cx="676" cy="126" r="15" fill="#4aa3ff" fill-opacity=".14" stroke="#4aa3ff"/>
+    <text x="676" y="131" text-anchor="middle" font-size="14" font-weight="700" fill="#4aa3ff">3</text>
+    <text x="702" y="124" font-size="15" font-weight="700" fill="#e6edf3">Stream</text>
+    <text x="702" y="142" font-size="11.5" fill="#7d8896">overlay.js over the WebRTC page</text>
+    <text x="668" y="174" font-size="12" fill="#9aa4b0">The customer-facing page:</text>
+    <text x="668" y="196" font-size="12" fill="#c7d0da">RTX video fills the window</text>
+    <text x="668" y="216" font-size="12" fill="#c7d0da">DOM chrome sits on top</text>
+    <text x="668" y="236" font-size="12" fill="#c7d0da">one call: Configurator.send()</text>
+    <text x="668" y="266" font-size="11.5" fill="#7d8896">No 3D code in the browser.</text>
+
+    <!-- 4 -->
+    <rect x="960" y="96" width="236" height="196" rx="12" fill="#171c22" stroke="#2a323c"/>
+    <circle cx="988" cy="126" r="15" fill="#4aa3ff" fill-opacity=".14" stroke="#4aa3ff"/>
+    <text x="988" y="131" text-anchor="middle" font-size="14" font-weight="700" fill="#4aa3ff">4</text>
+    <text x="1014" y="124" font-size="15" font-weight="700" fill="#e6edf3">Apply</text>
+    <text x="1014" y="142" font-size="11.5" fill="#7d8896">gokul.configurator.core</text>
+    <text x="980" y="174" font-size="12" fill="#9aa4b0">Kit extension, in the app:</text>
+    <text x="980" y="196" font-size="12" fill="#c7d0da">writes the live USD stage</text>
+    <text x="980" y="216" font-size="12" fill="#c7d0da">session layer only</text>
+    <text x="980" y="236" font-size="12" fill="#c7d0da">frames go back as video</text>
+    <text x="980" y="266" font-size="11.5" fill="#7d8896">The scene on disk is untouched.</text>
+  </g>
+
+  <!-- arrows + artifacts -->
+  <g font-size="11">
+    <line x1="290" y1="194" x2="330" y2="194" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#pArrow)"/>
+    <line x1="602" y1="194" x2="642" y2="194" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#pArrow)"/>
+    <line x1="914" y1="194" x2="954" y2="194" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#pArrow)"/>
+
+    <g>
+      <rect x="192" y="308" width="196" height="30" rx="8" fill="#10151a" stroke="#2f3a45"/>
+      <text x="290" y="327" text-anchor="middle" font-size="11.5" fill="#8fd0ff">6 × *.json in the project</text>
+      <path d="M290,296 L290,306" stroke="#3b4652" stroke-width="1.2"/>
+      <path d="M290,222 L290,296" stroke="#3b4652" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+    <g>
+      <rect x="506" y="308" width="196" height="30" rx="8" fill="#10151a" stroke="#2f3a45"/>
+      <text x="604" y="327" text-anchor="middle" font-size="11.5" fill="#8fd0ff">ui_config.json</text>
+      <path d="M604,296 L604,306" stroke="#3b4652" stroke-width="1.2"/>
+      <path d="M604,222 L604,296" stroke="#3b4652" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+    <g>
+      <rect x="806" y="308" width="272" height="30" rx="8" fill="#10151a" stroke="#2f3a45"/>
+      <text x="942" y="327" text-anchor="middle" font-size="11.5" fill="#8fd0ff">{ event_type: "configuratorApply" }</text>
+      <path d="M942,296 L942,306" stroke="#3b4652" stroke-width="1.2"/>
+      <path d="M942,222 L942,296" stroke="#3b4652" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+  </g>
+
+  <!-- return path -->
+  <g>
+    <path d="M1078,78 L300,78" stroke="url(#pgAccent)" stroke-width="1.6" stroke-dasharray="5 4"
+          marker-end="url(#pArrow)" fill="none"/>
+    <text x="700" y="66" text-anchor="middle" font-size="11.5" fill="#7d8896">
+      RTX frames stream back to the same page — the browser never loads geometry
+    </text>
+  </g>
+
+  <text x="24" y="42" font-size="19" font-weight="700" fill="#e6edf3">One artist records. One page authors. One message drives the render.</text>
+  <text x="24" y="66" font-size="12.5" fill="#7d8896">Every stage is data on disk, so any stage can be re-run on its own.</text>
+</svg>

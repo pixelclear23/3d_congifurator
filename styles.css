@@ -1,0 +1,225 @@
+/* ===================================================================
+   3D Configurator Toolkit — site styles
+   Dark, tool-like, no framework. Colours mirror the toolkit's own UI.
+   =================================================================== */
+:root{
+  --bg:#0b0d10;
+  --bg-alt:#0f1317;
+  --panel:#171c22;
+  --panel-2:#10151a;
+  --line:#242c35;
+  --line-2:#2f3a45;
+  --text:#e6edf3;
+  --text-dim:#9aa4b0;
+  --text-mute:#6b7682;
+  --accent:#4aa3ff;
+  --accent-dim:#8fd0ff;
+  --green:#76b900;
+  --radius:12px;
+  --maxw:1180px;
+  --font:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --mono:Consolas,"SF Mono",ui-monospace,Menlo,monospace;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:16px/1.65 var(--font);
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;height:auto}
+a{color:var(--accent-dim);text-decoration:none}
+a:hover{color:#fff;text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--accent);color:#04101f;padding:10px 16px;font-weight:600;border-radius:0 0 8px 0;
+}
+.skip:focus{left:0}
+
+/* ---------------- header ---------------- */
+header.site{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:16px;
+  padding:10px max(20px,calc((100vw - var(--maxw))/2));
+  background:rgba(11,13,16,.88);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:700;font-size:15px}
+.brand:hover{text-decoration:none}
+.brand .mark{
+  width:16px;height:16px;border-radius:50%;
+  border:3px solid var(--green);
+  box-shadow:0 0 0 3px rgba(118,185,0,.12);
+}
+header.site nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+header.site nav a{
+  padding:7px 11px;border-radius:8px;font-size:13.5px;color:var(--text-dim);
+}
+header.site nav a:hover{background:#161b21;color:var(--text);text-decoration:none}
+header.site nav a[aria-current="true"]{color:var(--text);background:#161b21}
+header.site nav a.ghost{border:1px solid var(--line-2);color:var(--text)}
+.navtoggle{
+  display:none;margin-left:auto;
+  background:#161b21;color:var(--text);border:1px solid var(--line-2);
+  border-radius:8px;padding:7px 12px;font:inherit;font-size:13.5px;cursor:pointer;
+}
+
+/* ---------------- layout ---------------- */
+main{display:block}
+.hero,.band{
+  padding:0 max(20px,calc((100vw - var(--maxw))/2));
+}
+.hero{padding-top:76px;padding-bottom:64px}
+.band{padding-top:72px;padding-bottom:72px;border-top:1px solid var(--line)}
+.band.alt{background:var(--bg-alt)}
+
+h1{
+  font-size:clamp(30px,5.2vw,52px);line-height:1.12;letter-spacing:-.02em;
+  margin:.2em 0 .5em;max-width:24ch;
+}
+h2{font-size:clamp(23px,3vw,31px);letter-spacing:-.015em;margin:0 0 .5em}
+h3{font-size:16.5px;margin:2.2em 0 .6em;letter-spacing:-.005em}
+.card h3,.notes h3{margin-top:0}
+p{margin:0 0 1em;max-width:78ch}
+
+.eyebrow{
+  text-transform:uppercase;letter-spacing:.14em;font-size:11.5px;font-weight:700;
+  color:var(--accent);margin:0;
+}
+.lede{font-size:clamp(16px,1.6vw,19px);color:var(--text-dim);max-width:70ch}
+.intro{color:var(--text-dim);max-width:72ch}
+.note{color:var(--text-dim);font-size:14.5px;max-width:72ch}
+.note.small,.small{font-size:13px;color:var(--text-mute)}
+
+/* ---------------- buttons ---------------- */
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 0}
+.btn{
+  display:inline-block;padding:11px 20px;border-radius:9px;
+  border:1px solid var(--line-2);background:#161b21;color:var(--text);
+  font-size:14.5px;font-weight:600;
+}
+.btn:hover{background:#1d232b;border-color:#3c4753;text-decoration:none;color:#fff}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#06131f}
+.btn.primary:hover{background:#63b1ff;color:#04101a}
+.btn.small{padding:8px 14px;font-size:13.5px}
+
+/* ---------------- stats ---------------- */
+.stats{
+  list-style:none;margin:48px 0 0;padding:0;
+  display:grid;gap:1px;background:var(--line);
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+}
+.stats li{background:var(--panel-2);padding:20px 22px}
+.stats b{display:block;font-size:30px;line-height:1;color:var(--accent);margin-bottom:8px}
+.stats span{font-size:13px;color:var(--text-dim)}
+
+/* ---------------- cards ---------------- */
+.cards{
+  display:grid;gap:18px;margin:32px 0 0;
+  grid-template-columns:repeat(auto-fit,minmax(255px,1fr));
+}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 22px 18px;
+}
+.card p{font-size:14.5px;color:var(--text-dim);margin-bottom:.8em}
+.card p:last-child{margin-bottom:0}
+.card .file{font:12px/1.5 var(--mono);color:var(--accent-dim);word-break:break-all}
+.notes .card h3{font-size:15.5px;color:var(--text)}
+.notes .card p{font-size:14px}
+
+/* ---------------- figures ---------------- */
+figure{
+  margin:30px 0 8px;background:var(--panel-2);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+}
+figure img{width:100%}
+figcaption{
+  padding:13px 18px;font-size:13px;color:var(--text-mute);
+  border-top:1px solid var(--line);background:#0d1114;
+}
+
+/* ---------------- definition list ---------------- */
+.defs{
+  display:grid;gap:1px;margin:24px 0 0;padding:0;background:var(--line);
+  grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+}
+.defs > div{background:var(--panel);padding:20px 22px}
+.defs dt{font-weight:700;font-size:15px;margin-bottom:6px}
+.defs dd{margin:0;font-size:14.5px;color:var(--text-dim)}
+
+/* ---------------- lists ---------------- */
+.steps{margin:20px 0 0;padding-left:22px;max-width:80ch}
+.steps li{margin-bottom:10px;color:var(--text-dim);font-size:15px}
+.steps b{color:var(--text)}
+
+.grid2{
+  list-style:none;margin:20px 0 0;padding:0;display:grid;gap:12px;
+  grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
+}
+.grid2 li{
+  background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--line-2);
+  border-radius:8px;padding:14px 16px;font-size:14.5px;color:var(--text-dim);
+}
+.grid2 li b{color:var(--text)}
+
+.tags{list-style:none;display:flex;flex-wrap:wrap;gap:9px;margin:24px 0 0;padding:0}
+.tags li{
+  padding:7px 14px;border-radius:999px;background:var(--panel);
+  border:1px solid var(--line-2);font-size:13.5px;color:var(--text-dim);
+}
+
+/* ---------------- code ---------------- */
+code{font:.9em/1.5 var(--mono);color:var(--accent-dim);word-break:break-word}
+pre{
+  margin:20px 0 12px;padding:18px 20px;overflow-x:auto;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);
+}
+pre code{color:#c7d0da;font-size:13.5px;line-height:1.75;word-break:normal;white-space:pre}
+
+/* ---------------- table ---------------- */
+.tablewrap{
+  margin:28px 0 0;overflow-x:auto;border:1px solid var(--line);
+  border-radius:var(--radius);background:var(--panel);
+}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+caption{
+  text-align:left;padding:16px 18px 0;font-weight:700;font-size:15px;color:var(--text);
+}
+th,td{padding:14px 18px;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+thead th{
+  font-size:12px;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--text-mute);border-top:none;
+}
+tbody td:first-child{white-space:nowrap}
+tbody td:nth-child(2){color:var(--text)}
+tbody td:nth-child(3){color:var(--text-dim)}
+
+/* ---------------- footer ---------------- */
+footer{
+  padding:40px max(20px,calc((100vw - var(--maxw))/2));
+  border-top:1px solid var(--line);color:var(--text-mute);font-size:14px;
+}
+footer p{margin:0 0 6px}
+
+/* ---------------- narrow ---------------- */
+@media (max-width:860px){
+  .navtoggle{display:block}
+  header.site nav{
+    display:none;order:3;width:100%;margin-left:0;
+    flex-direction:column;gap:2px;padding-top:8px;
+  }
+  header.site nav.open{display:flex}
+  header.site{flex-wrap:wrap}
+  .hero{padding-top:52px;padding-bottom:48px}
+  .band{padding-top:56px;padding-bottom:56px}
+}

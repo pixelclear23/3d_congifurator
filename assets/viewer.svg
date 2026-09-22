@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 686" width="1220" height="686"
+     role="img" aria-labelledby="vwTitle vwDesc"
+     font-family="Segoe UI, system-ui, sans-serif">
+  <title id="vwTitle">The streamed configurator as a customer sees it</title>
+  <desc id="vwDesc">A full-bleed RTX render of a car on a turntable. Over it: a title top left, view pills, a logo top right, a full view button, a row of paint swatches at the bottom and a tab strip for environment, car paint, rims, door and lights.</desc>
+
+  <defs>
+    <radialGradient id="studio" cx="52%" cy="46%" r="70%">
+      <stop offset="0" stop-color="#d9dde1"/>
+      <stop offset="42%" stop-color="#9aa2ab"/>
+      <stop offset="100%" stop-color="#4c545d"/>
+    </radialGradient>
+    <linearGradient id="carDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3137"/>
+      <stop offset="55%" stop-color="#14181c"/>
+      <stop offset="1" stop-color="#0a0c0e"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="45%" stop-color="#fff" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- streamed video -->
+  <rect width="1220" height="686" fill="url(#studio)"/>
+
+  <!-- turntable -->
+  <ellipse cx="610" cy="520" rx="400" ry="74" fill="#e9ecef" fill-opacity=".55"/>
+  <ellipse cx="610" cy="520" rx="400" ry="74" fill="none" stroke="#2b3137" stroke-width="5" stroke-opacity=".8"/>
+
+  <!-- car -->
+  <g transform="translate(378,336) scale(1.02)">
+    <ellipse cx="232" cy="156" rx="220" ry="16" fill="#000" fill-opacity=".38"/>
+    <path d="M20,120 C24,100 46,95 68,92 L128,86 C150,64 188,50 244,50 C300,50 338,64 360,86
+             L418,96 C438,100 446,108 446,122 L446,130 C446,138 440,142 432,142
+             L30,142 C22,142 16,136 16,128 Z"
+          fill="url(#carDark)"/>
+    <path d="M140,84 C158,68 188,58 242,58 C292,58 324,68 344,84 Z" fill="#0d1013" fill-opacity=".92"/>
+    <path d="M60,110 L430,104" stroke="url(#gloss)" stroke-width="6" fill="none"/>
+    <path d="M356,60 L404,54 L404,62 L358,68 Z" fill="#14181c"/>
+    <circle cx="108" cy="140" r="28" fill="#090b0d"/>
+    <circle cx="108" cy="140" r="14" fill="none" stroke="#3a4249" stroke-width="3"/>
+    <circle cx="352" cy="140" r="28" fill="#090b0d"/>
+    <circle cx="352" cy="140" r="14" fill="none" stroke="#3a4249" stroke-width="3"/>
+    <ellipse cx="430" cy="112" rx="9" ry="5" fill="#f2f6ff" fill-opacity=".9"/>
+  </g>
+
+  <!-- ===== overlay chrome ===== -->
+  <text x="20" y="30" font-size="12.5" font-weight="700" fill="#f2f5f8">Configurator</text>
+
+  <g font-size="10.5">
+    <rect x="16" y="46" width="62" height="22" rx="11" fill="#12161b" fill-opacity=".72" stroke="#ffffff" stroke-opacity=".18"/>
+    <text x="47" y="61" text-anchor="middle" fill="#eef2f6">Back View</text>
+    <rect x="84" y="46" width="76" height="22" rx="11" fill="#12161b" fill-opacity=".72" stroke="#4aa3ff"/>
+    <text x="122" y="61" text-anchor="middle" fill="#eef2f6">Interior View</text>
+  </g>
+
+  <!-- logo -->
+  <g>
+    <circle cx="1052" cy="44" r="13" fill="none" stroke="#76b900" stroke-width="3.4"/>
+    <circle cx="1052" cy="44" r="5" fill="#76b900"/>
+    <text x="1074" y="41" font-size="9.5" font-weight="700" fill="#1c2127">NVIDIA</text>
+    <text x="1074" y="53" font-size="9.5" font-weight="700" fill="#4a535c">OMNIVERSE</text>
+    <text x="1074" y="27" font-size="7.5" fill="#5c656e">Powered by</text>
+  </g>
+
+  <!-- tools cluster -->
+  <rect x="1176" y="16" width="28" height="28" rx="7" fill="#12161b" fill-opacity=".62" stroke="#ffffff" stroke-opacity=".2"/>
+  <path d="M1185,28 L1185,23 L1190,23 M1195,23 L1200,23 L1200,28 M1200,33 L1200,38 L1195,38 M1190,38 L1185,38 L1185,33"
+        stroke="#eef2f6" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+  <!-- wordmark -->
+  <text x="132" y="594" font-size="34" font-weight="800" fill="#1e232a" fill-opacity=".9" letter-spacing="6">MC20</text>
+
+  <!-- swatches -->
+  <g>
+    <circle cx="444" cy="596" r="14" fill="#e8e6e1" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="486" cy="596" r="14" fill="#17a0dd" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="528" cy="596" r="14" fill="#d14a16" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="570" cy="596" r="14" fill="#9fb3c4" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="612" cy="596" r="14" fill="#c6ccd2" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="654" cy="596" r="14" fill="#79d2b0" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="696" cy="596" r="14" fill="#42c95f" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="738" cy="596" r="14" fill="#1d4ed8" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="780" cy="596" r="15" fill="#8e1420" stroke="#4aa3ff" stroke-width="2.4"/>
+    <g font-size="7" fill="#2b3137" text-anchor="middle">
+      <text x="444" y="622">Bianco</text><text x="486" y="622">Blu</text>
+      <text x="528" y="622">Giallo</text><text x="570" y="622">Grigio I.</text>
+      <text x="612" y="622">Grigio M.</text><text x="654" y="622">Mint</text>
+      <text x="696" y="622">Punchy</text><text x="738" y="622">Nero</text>
+      <text x="780" y="622">Rosso</text>
+    </g>
+  </g>
+
+  <!-- tab strip -->
+  <g font-size="10" letter-spacing="1.2">
+    <text x="392" y="660" fill="#2b3137" fill-opacity=".75">ENVIRONMENT</text>
+    <text x="496" y="660" fill="#1266c9" font-weight="700">CAR PAINT</text>
+    <rect x="494" y="666" width="70" height="2" fill="#1266c9"/>
+    <text x="584" y="660" fill="#2b3137" fill-opacity=".75">RIMS</text>
+    <text x="638" y="660" fill="#2b3137" fill-opacity=".75">DOOR</text>
+    <text x="694" y="660" fill="#2b3137" fill-opacity=".75">LIGHTS</text>
+  </g>
+</svg>

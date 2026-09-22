@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" width="1180" height="620"
+     role="img" aria-labelledby="dmTitle dmDesc"
+     font-family="Segoe UI, system-ui, sans-serif">
+  <title id="dmTitle">The six captured JSON files and what is generated from them</title>
+  <desc id="dmDesc">Six files written by the capture tool: materials.json, meshes.json, animations.json, cameras.json, environments.json and lights.json. They feed ui_config.json, which describes the interface, and captured_data.json, the bundle the browser page reads.</desc>
+
+  <defs>
+    <marker id="dArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4aa3ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1180" height="620" fill="#0e1013"/>
+  <text x="24" y="38" font-size="18" font-weight="700" fill="#e6edf3">The project folder is the format</text>
+  <text x="24" y="60" font-size="12" fill="#7d8896">Plain JSON, human-readable, diffable, and the only contract between the four parts.</text>
+
+  <g font-family="Consolas, ui-monospace, monospace">
+    <!-- materials -->
+    <rect x="24" y="86" width="364" height="150" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="42" y="110" font-size="12.5" font-weight="700" fill="#8fd0ff" font-family="Segoe UI, system-ui, sans-serif">materials.json</text>
+    <text x="42" y="132" font-size="10" fill="#9aa4b0">"parts": { "Carpaint": {</text>
+    <text x="42" y="150" font-size="10" fill="#9aa4b0">  "variants": [ {</text>
+    <text x="42" y="168" font-size="10" fill="#c7d0da">    "variant_name": "Rosso Vincente",</text>
+    <text x="42" y="186" font-size="10" fill="#c7d0da">    "material_path": "/…/Carpaint_04",</text>
+    <text x="42" y="204" font-size="10" fill="#c7d0da">    "parameters": { … 168 shader inputs }</text>
+    <text x="42" y="222" font-size="10" fill="#9aa4b0">  } ] } }</text>
+
+    <!-- meshes -->
+    <rect x="408" y="86" width="364" height="150" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="426" y="110" font-size="12.5" font-weight="700" fill="#8fd0ff" font-family="Segoe UI, system-ui, sans-serif">meshes.json</text>
+    <text x="426" y="132" font-size="10" fill="#9aa4b0">"Bathroom tub": {</text>
+    <text x="426" y="150" font-size="10" fill="#c7d0da">  "default": "variant1",</text>
+    <text x="426" y="168" font-size="10" fill="#9aa4b0">  "variants": {</text>
+    <text x="426" y="186" font-size="10" fill="#c7d0da">    "variant1": { "prims": [ … ] },</text>
+    <text x="426" y="204" font-size="10" fill="#c7d0da">    "variant2": { "prims": [ … ] } } }</text>
+    <text x="426" y="224" font-size="9.5" fill="#6b7682" font-family="Segoe UI, system-ui, sans-serif">geometry swapped by visibility, per group</text>
+
+    <!-- animations -->
+    <rect x="792" y="86" width="364" height="150" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="810" y="110" font-size="12.5" font-weight="700" fill="#8fd0ff" font-family="Segoe UI, system-ui, sans-serif">animations.json</text>
+    <text x="810" y="132" font-size="10" fill="#9aa4b0">"Door": { "parts": [ {</text>
+    <text x="810" y="150" font-size="10" fill="#c7d0da">  "target_part": "Door_L",</text>
+    <text x="810" y="168" font-size="10" fill="#c7d0da">  "start_frame": 1, "end_frame": 47,</text>
+    <text x="810" y="186" font-size="10" fill="#c7d0da">  "animation": { "1": {…}, "2": {…} … }</text>
+    <text x="810" y="204" font-size="10" fill="#9aa4b0">} ] }</text>
+    <text x="810" y="224" font-size="9.5" fill="#6b7682" font-family="Segoe UI, system-ui, sans-serif">sampled per frame, so no rig is needed at runtime</text>
+
+    <!-- cameras -->
+    <rect x="24" y="252" width="364" height="150" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="42" y="276" font-size="12.5" font-weight="700" fill="#8fd0ff" font-family="Segoe UI, system-ui, sans-serif">cameras.json</text>
+    <text x="42" y="298" font-size="10" fill="#9aa4b0">"Interior View": {</text>
+    <text x="42" y="316" font-size="10" fill="#c7d0da">  "prim_path": "/scene/Camera_04",</text>
+    <text x="42" y="334" font-size="10" fill="#c7d0da">  "is_cinematic": true, "animation": {…},</text>
+    <text x="42" y="352" font-size="10" fill="#9aa4b0">  "on_activate": {</text>
+    <text x="42" y="370" font-size="10" fill="#c7d0da">    "lights": […], "animations": […],</text>
+    <text x="42" y="388" font-size="10" fill="#c7d0da">    "materials": [ {"on":…, "off":…} ] } }</text>
+
+    <!-- environments -->
+    <rect x="408" y="252" width="364" height="150" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="426" y="276" font-size="12.5" font-weight="700" fill="#8fd0ff" font-family="Segoe UI, system-ui, sans-serif">environments.json</text>
+    <text x="426" y="298" font-size="10" fill="#9aa4b0">"Studio Set": { "prims": {</text>
+    <text x="426" y="316" font-size="10" fill="#c7d0da">  "/scene/Studio": "inherited",</text>
+    <text x="426" y="334" font-size="10" fill="#c7d0da">  "/scene/Outdoor": "invisible",</text>
+    <text x="426" y="352" font-size="10" fill="#c7d0da">  "/scene/Dome": { "intensity": 1200,</text>
+    <text x="426" y="370" font-size="10" fill="#c7d0da">    "texture_file": "studio.hdr" } } }</text>
+    <text x="426" y="390" font-size="9.5" fill="#6b7682" font-family="Segoe UI, system-ui, sans-serif">applying a set hides the prims the other sets own</text>
+
+    <!-- lights -->
+    <rect x="792" y="252" width="364" height="150" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="810" y="276" font-size="12.5" font-weight="700" fill="#8fd0ff" font-family="Segoe UI, system-ui, sans-serif">lights.json</text>
+    <text x="810" y="298" font-size="10" fill="#9aa4b0">"Head Lights": {</text>
+    <text x="810" y="316" font-size="10" fill="#c7d0da">  "prims": [ "/scene/Light_L", … ],</text>
+    <text x="810" y="334" font-size="10" fill="#c7d0da">  "attrs": { "/scene/Light_L": {</text>
+    <text x="810" y="352" font-size="10" fill="#c7d0da">    "intensity": 12000, "colorTemperature": 6500 } },</text>
+    <text x="810" y="370" font-size="10" fill="#c7d0da">  "conditions": { "materials": [</text>
+    <text x="810" y="388" font-size="10" fill="#c7d0da">    {"on":"Lens :: Head_On","off":"Lens :: Head_Off"} ] } }</text>
+  </g>
+
+  <!-- arrows down to generated -->
+  <g>
+    <path d="M206,408 L206,446 L430,446 L430,466" stroke="#3b4652" stroke-width="1.3" fill="none"/>
+    <path d="M590,408 L590,466" stroke="#3b4652" stroke-width="1.3" fill="none"/>
+    <path d="M974,408 L974,446 L750,446 L750,466" stroke="#3b4652" stroke-width="1.3" fill="none"/>
+    <line x1="590" y1="446" x2="590" y2="462" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#dArrow)"/>
+  </g>
+
+  <!-- generated -->
+  <rect x="180" y="470" width="368" height="118" rx="10" fill="#10151a" stroke="#4aa3ff" stroke-opacity=".45"/>
+  <text x="200" y="494" font-size="12.5" font-weight="700" fill="#e6edf3">ui_config.json</text>
+  <text x="200" y="514" font-size="10.5" fill="#9aa4b0">What the interface looks like: categories,</text>
+  <text x="200" y="532" font-size="10.5" fill="#9aa4b0">option values, icons, dock edge, shapes,</text>
+  <text x="200" y="550" font-size="10.5" fill="#9aa4b0">labels, sounds, splash, logos, theme.</text>
+  <text x="200" y="572" font-size="10" fill="#6b7682">Seeded by build_ui_config.py, then edited in the browser builder.</text>
+
+  <rect x="632" y="470" width="368" height="118" rx="10" fill="#10151a" stroke="#2f3a45"/>
+  <text x="652" y="494" font-size="12.5" font-weight="700" fill="#e6edf3">captured_data.json</text>
+  <text x="652" y="514" font-size="10.5" fill="#9aa4b0">All six files bundled under one key each,</text>
+  <text x="652" y="532" font-size="10.5" fill="#9aa4b0">copied into the web client's public folder</text>
+  <text x="652" y="550" font-size="10.5" fill="#9aa4b0">so the page can read the data it drives.</text>
+  <text x="652" y="572" font-size="10" fill="#6b7682">Rebuilt on every launch, so re-capturing needs no other step.</text>
+</svg>

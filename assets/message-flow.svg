@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 560" width="1180" height="560"
+     role="img" aria-labelledby="mfTitle mfDesc"
+     font-family="Segoe UI, system-ui, sans-serif">
+  <title id="mfTitle">What happens when a customer clicks a swatch</title>
+  <desc id="mfDesc">The overlay calls Configurator.send with a type and a value. It is serialised as an event_type configuratorApply message, sent over the WebRTC data channel, republished on the Kit app message bus, dispatched by the extension to a handler, and written into the USD session layer. The re-rendered frames come back as video over UDP.</desc>
+
+  <defs>
+    <marker id="mArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4aa3ff"/>
+    </marker>
+    <marker id="mArrowBack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#76b900"/>
+    </marker>
+  </defs>
+
+  <rect width="1180" height="560" fill="#0e1013"/>
+  <text x="24" y="38" font-size="18" font-weight="700" fill="#e6edf3">One message on the wire</text>
+  <text x="24" y="60" font-size="12" fill="#7d8896">The browser has no scene graph, no materials and no geometry. It sends a name.</text>
+
+  <!-- lanes -->
+  <g>
+    <rect x="24" y="92" width="196" height="120" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="40" y="116" font-size="12.5" font-weight="700" fill="#e6edf3">Browser</text>
+    <text x="40" y="136" font-size="10.5" fill="#7d8896">overlay.js · your UI</text>
+    <text x="40" y="164" font-size="10.5" fill="#9aa4b0">a swatch is clicked</text>
+    <text x="40" y="184" font-size="10.5" fill="#9aa4b0">pick(cat, option)</text>
+
+    <rect x="256" y="92" width="196" height="120" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="272" y="116" font-size="12.5" font-weight="700" fill="#e6edf3">AppStreamer</text>
+    <text x="272" y="136" font-size="10.5" fill="#7d8896">WebRTC data channel</text>
+    <text x="272" y="164" font-size="10.5" fill="#9aa4b0">sendMessage(json)</text>
+    <text x="272" y="184" font-size="10.5" fill="#9aa4b0">signalling TCP 49100</text>
+
+    <rect x="488" y="92" width="196" height="120" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="504" y="116" font-size="12.5" font-weight="700" fill="#e6edf3">Kit message bus</text>
+    <text x="504" y="136" font-size="10.5" fill="#7d8896">omni.kit.livestream.messaging</text>
+    <text x="504" y="164" font-size="10.5" fill="#9aa4b0">republished as an event of</text>
+    <text x="504" y="184" font-size="10.5" fill="#9aa4b0">type "configuratorApply"</text>
+
+    <rect x="720" y="92" width="196" height="120" rx="10" fill="#171c22" stroke="#4aa3ff" stroke-opacity=".55"/>
+    <text x="736" y="116" font-size="12.5" font-weight="700" fill="#e6edf3">ConfiguratorCore</text>
+    <text x="736" y="136" font-size="10.5" fill="#7d8896">gokul.configurator.core</text>
+    <text x="736" y="164" font-size="10.5" fill="#9aa4b0">_on_apply → apply(type, value)</text>
+    <text x="736" y="184" font-size="10.5" fill="#9aa4b0">reads the captured JSON</text>
+
+    <rect x="952" y="92" width="204" height="120" rx="10" fill="#171c22" stroke="#2a323c"/>
+    <text x="968" y="116" font-size="12.5" font-weight="700" fill="#e6edf3">Live USD stage</text>
+    <text x="968" y="136" font-size="10.5" fill="#7d8896">session layer · RTX</text>
+    <text x="968" y="164" font-size="10.5" fill="#9aa4b0">attributes written</text>
+    <text x="968" y="184" font-size="10.5" fill="#9aa4b0">next frame reflects it</text>
+  </g>
+
+  <g>
+    <line x1="224" y1="152" x2="250" y2="152" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#mArrow)"/>
+    <line x1="456" y1="152" x2="482" y2="152" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#mArrow)"/>
+    <line x1="688" y1="152" x2="714" y2="152" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#mArrow)"/>
+    <line x1="920" y1="152" x2="946" y2="152" stroke="#4aa3ff" stroke-width="1.6" marker-end="url(#mArrow)"/>
+  </g>
+
+  <!-- payload evolution -->
+  <text x="24" y="264" font-size="12.5" font-weight="700" fill="#cfd8e2">The payload, end to end</text>
+
+  <g font-family="Consolas, ui-monospace, monospace" font-size="11">
+    <rect x="24" y="280" width="340" height="58" rx="8" fill="#10151a" stroke="#2f3a45"/>
+    <text x="38" y="302" fill="#7d8896">// overlay.js</text>
+    <text x="38" y="322" fill="#8fd0ff">Configurator.send('materials', 'Carpaint :: Rosso Vincente')</text>
+
+    <rect x="400" y="280" width="356" height="58" rx="8" fill="#10151a" stroke="#2f3a45"/>
+    <text x="414" y="302" fill="#7d8896">// on the wire</text>
+    <text x="414" y="322" fill="#8fd0ff">{"event_type":"configuratorApply","payload":{…}}</text>
+
+    <rect x="792" y="280" width="364" height="58" rx="8" fill="#10151a" stroke="#2f3a45"/>
+    <text x="806" y="302" fill="#7d8896"># extension.py</text>
+    <text x="806" y="322" fill="#8fd0ff">apply("materials", "Carpaint :: Rosso Vincente")</text>
+  </g>
+
+  <!-- dispatch -->
+  <text x="24" y="382" font-size="12.5" font-weight="700" fill="#cfd8e2">Seven types, seven handlers</text>
+  <g font-size="11">
+    <rect x="24" y="398" width="1132" height="76" rx="8" fill="#171c22" stroke="#2a323c"/>
+    <g fill="#8fd0ff" font-family="Consolas, ui-monospace, monospace">
+      <text x="44" y="422">materials</text><text x="204" y="422">cameras</text><text x="364" y="422">animations</text>
+      <text x="524" y="422">lights</text><text x="684" y="422">environments</text><text x="864" y="422">meshes</text>
+      <text x="1024" y="422">exit_view</text>
+    </g>
+    <g fill="#9aa4b0" font-size="10">
+      <text x="44" y="442">shader inputs</text><text x="204" y="442">viewport camera</text><text x="364" y="442">frame playback</text>
+      <text x="524" y="442">visibility + values</text><text x="684" y="442">set swap</text><text x="864" y="442">variant swap</text>
+      <text x="1024" y="442">revert + persp</text>
+    </g>
+    <g fill="#6b7682" font-size="10">
+      <text x="44" y="460">per-part or global</text><text x="204" y="460">plus a fly-through</text><text x="364" y="460">open / close toggle</text>
+      <text x="524" y="460">plus emissive pairs</text><text x="684" y="460">hides the others</text><text x="864" y="460">grouped, independent</text>
+      <text x="1024" y="460">undoes the view</text>
+    </g>
+  </g>
+
+  <!-- return -->
+  <path d="M1054,492 L120,492" stroke="#76b900" stroke-width="1.8" stroke-dasharray="6 4"
+        marker-end="url(#mArrowBack)" fill="none"/>
+  <text x="590" y="524" text-anchor="middle" font-size="11.5" fill="#9aa4b0">
+    re-rendered frames return as encoded video over UDP 47998 — one Kit instance serves one interactive viewer
+  </text>
+</svg>
