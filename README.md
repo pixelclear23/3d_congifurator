@@ -39,7 +39,10 @@ that the first visitor is skimming. The detail that used to be inline now lives 
 than to the top-level sections.
 
 Screenshots are real captures, downscaled to 1920px wide and served as WebP with a
-progressive JPEG fallback through `<picture>`; each frame links to the full-size JPEG. The
+progressive JPEG fallback through `<picture>`; each frame links to the full-size JPEG.
+`shot-importer` is the exception: it is a UI panel, small text on flat greys, where JPEG
+ringing shows and there is no photographic detail to lose — so it keeps its native 550×373
+and ships as PNG with a `quality=92` WebP alongside. The
 three explanatory diagrams are hand-authored SVG, because no screenshot can show a data
 flow — they also stay legible at any size, theme with the page and carry real text for
 search and screen readers.

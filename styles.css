@@ -591,6 +591,29 @@ figure.banner .slide img,figure.banner .slide.on img{
 /* Sat inside the figure, which clips, so it gets its own strip underneath. */
 figure.banner .dots{justify-content:center;margin:0;padding:12px 0 10px}
 
+/* ---- copy beside a UI panel -------------------------------------------
+   The headline still spans the whole column; only the lede and the chips give
+   up room, because those are the parts that were leaving it empty. The panel
+   column is capped at the screenshot's own width so it is never resampled up,
+   and it shrinks with the column rather than overflowing it. */
+.introsplit{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,550px);
+  gap:30px 52px;align-items:start;margin-top:4px;
+}
+.introsplit > div > .lede:last-child,.introsplit > div > :last-child{margin-bottom:0}
+/* min(), not max-width: a max-width cannot shrink the figure below the panel's
+   own 550px, so on a phone it would push the page wider than the screen and
+   take every other line of copy off the right edge with it. */
+figure.panelshot{margin:0;justify-self:end;width:min(100%,550px)}
+figure.panelshot img{display:block}
+
+@media (max-width:980px){
+  /* Two columns stop paying for themselves once the copy drops below about 45
+     characters a line: stack, and let the panel run to the column edge. */
+  .introsplit{grid-template-columns:minmax(0,1fr);gap:26px}
+  figure.panelshot{justify-self:start}
+}
+
 /* ---- card variants used by the tool pages ---------------------------- */
 /* the label above a card's heading: "Geometry", "98% faster", "Materials" */
 .card .metric{

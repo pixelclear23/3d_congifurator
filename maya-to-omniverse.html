@@ -69,18 +69,43 @@
   <section id="intro" class="band alt">
     <p class="eyebrow">Maya · Arnold · OpenUSD · Omniverse Kit</p>
     <h1>A Maya shot that arrives <em>finished</em>.</h1>
-    <p class="lede">
-      Native USD export moves geometry and leaves the rest to hand work:
-      shaders land grey, per-face assignments collapse, glass renders solid,
-      lights and cameras are simply gone. Two scripts and one JSON sidecar
-      carry the whole shot across instead.
-    </p>
+    <!-- The Kit-side window sits beside this copy rather than under it: the
+         text column only needs about 60 characters, which was leaving the
+         right half of the 1100px column empty. -->
+    <div class="introsplit">
+      <div>
+        <p class="lede">
+          Native USD export moves geometry and leaves the rest to hand work:
+          shaders land grey, per-face assignments collapse, glass renders solid,
+          lights and cameras are simply gone. Two scripts and one JSON sidecar
+          carry the whole shot across instead.
+        </p>
 
-    <ul class="chips">
-      <li><b>2</b> scripts — one in Maya, one in Kit</li>
-      <li><b>1</b> JSON sidecar is the whole contract</li>
-      <li><b>5</b> things carried: geometry, materials, textures, lights, cameras</li>
-    </ul>
+        <ul class="chips">
+          <li><b>2</b> scripts — one in Maya, one in Kit</li>
+          <li><b>1</b> JSON sidecar is the whole contract</li>
+          <li><b>5</b> things carried: geometry, materials, textures, lights, cameras</li>
+        </ul>
+      </div>
+
+      <!-- Shown at its native 550px, so the labels stay sharp rather than being
+           resampled; the link is the full-size PNG as everywhere else. -->
+      <figure class="shot panelshot">
+        <a href="assets/shot-importer.png">
+          <picture>
+            <source srcset="assets/shot-importer.webp" type="image/webp"/>
+            <img src="assets/shot-importer.png" width="550" height="373"
+                 loading="lazy" decoding="async"
+                 alt="The Maya to Omniverse Importer window docked in Kit: a field for the shot JSON with a Browse button, a scale value, an import mode set to Create New Scene, one IMPORT button, and a slider for imported lighting."/>
+          </picture>
+        </a>
+        <figcaption>
+          The Kit half of the pair. Point it at the <em>.shaders.json</em> the
+          Maya script wrote, set a scale, choose whether to build a new scene or
+          add to the open one, and press <b>Import</b>.
+        </figcaption>
+      </figure>
+    </div>
 
     <a class="scrollmore" href="#watch">
       <span>See it run</span>
