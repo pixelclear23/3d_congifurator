@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Maya → Omniverse — moving a whole shot, shaders and all · Gokul S</title>
+<meta name="description" content="A two-step pipeline that moves a Maya shot into NVIDIA Omniverse as native USD: Arnold shaders rebuilt as UsdPreviewSurface, per-face assignments, textures, lights and cameras."/>
+<meta name="color-scheme" content="dark"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="styles.css"/>
+<meta property="og:title" content="Maya → Omniverse — moving a whole shot, shaders and all"/>
+<meta property="og:description" content="Arnold shaders, per-face assignments, textures, lights and cameras, rebuilt as native USD."/>
+<meta property="og:image" content="assets/shot-mayabridge.jpg"/>
+<meta property="og:type" content="website"/>
+</head>
+<body data-page="mayabridge">
+<a class="skip" href="#watch">Skip to content</a>
+
+<header class="site">
+  <a class="brand" href="index.html" title="Back to the reel and CV">
+    <span class="mark" aria-hidden="true"></span>Gokul&nbsp;S</a>
+  <button class="navtoggle" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav id="nav" aria-label="Sections">
+    <a href="#watch">Watch</a>
+    <a href="#carries">What transfers</a>
+    <a href="#how">How it works</a>
+    <a href="#craft">Hard parts</a>
+    <a href="configurator.html">← Configurator</a>
+    <a class="ghost" href="index.html">Reel &amp; CV</a>
+  </nav>
+</header>
+
+<!-- Gallery navigation: this is the last page, so only a way back. -->
+<a class="pagenav prev" href="configurator.html" aria-label="Previous page: the RTX configurator toolkit">
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  <span class="label">Configurator</span>
+</a>
+
+<main id="top">
+
+  <!-- ============================= BANNER =============================
+       The banner is 16:9 and full of readable labels, so it gets its own
+       full-width block rather than being squeezed into a one-screen hero
+       beside the headline -- which is what pushed it off the right edge. -->
+  <section id="banner" class="band bannerband">
+    <figure class="shot banner">
+      <picture>
+        <source srcset="assets/shot-mayabridge.webp" type="image/webp"/>
+        <img src="assets/shot-mayabridge.jpg" width="1920" height="1080"
+             fetchpriority="high" decoding="async"
+             alt="The Maya to Omniverse pipeline as a banner: a Maya scene with its outliner on one side, the transfer step in the middle, and the same shot rebuilt and lit in NVIDIA Omniverse on the other."/>
+      </picture>
+    </figure>
+  </section>
+
+  <!-- ============================== INTRO ============================== -->
+  <section id="intro" class="band alt">
+    <p class="eyebrow">Maya · Arnold · OpenUSD · Omniverse Kit</p>
+    <h1>A Maya shot that arrives <em>finished</em>.</h1>
+    <p class="lede">
+      Native USD export moves geometry and leaves the rest to hand work:
+      shaders land grey, per-face assignments collapse, glass renders solid,
+      lights and cameras are simply gone. Two scripts and one JSON sidecar
+      carry the whole shot across instead.
+    </p>
+
+    <ul class="chips">
+      <li><b>2</b> scripts — one in Maya, one in Kit</li>
+      <li><b>1</b> JSON sidecar is the whole contract</li>
+      <li><b>5</b> things carried: geometry, materials, textures, lights, cameras</li>
+    </ul>
+
+    <a class="scrollmore" href="#watch">
+      <span>See it run</span>
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M12 4.5v13M6.5 12.5 12 18l5.5-5.5"/>
+      </svg>
+    </a>
+  </section>
+
+  <!-- ============================== WATCH ============================== -->
+  <section id="watch" class="band tile pin">
+    <span class="hero-sentinel" aria-hidden="true"></span>
+    <p class="kicker">See it running</p>
+
+    <!-- Two ratios in play here, which is why both are declared:
+           the poster is the 2.5:1 diagram  -> --media-ar sizes the frame for it
+           the video is 1280x746 = 1.7158   -> data-vimeo-ar retargets it on play
+         (from oEmbed at width=1280; it is not 16:9, and assuming 16:9 leaves a
+         white letterbox line, because the player's canvas is white). -->
+    <figure class="shot media player" data-vimeo="1229535024?h=c599ef7273"
+            data-vimeo-ar="1.7158" style="--media-ar:2.5">
+      <div class="frame">
+        <a href="assets/shot-mayaposter.jpg">
+          <picture>
+            <source srcset="assets/shot-mayaposter.webp" type="image/webp"/>
+            <img src="assets/shot-mayaposter.jpg" width="1920" height="768"
+                 loading="lazy" decoding="async"
+                 alt="Poster for the walkthrough: a wireframe Maya viewport and its scene outliner on the left, a Scene Transfer Tool panel in the middle listing geometry, material, light and camera mapping plus scene settings, and a finished lit interior render in Omniverse on the right. Along the bottom, the five stages: geometry remapping, materials to PBR, lights to Omniverse, camera transfer, settings preserved."/>
+          </picture>
+        </a>
+      </div>
+      <figcaption>
+        Export from Maya, import in Kit — the shot arrives with its materials
+        bound, its glass refracting and its lights and cameras in place.
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- ============================ TRANSFERS ============================ -->
+  <section id="carries" class="band alt tile">
+    <p class="kicker">What survives the trip</p>
+    <h2>Everything a native export leaves behind</h2>
+
+    <div class="cards">
+      <article class="card">
+        <p class="metric">Geometry</p>
+        <h3>World-space, visible only</h3>
+        <p>
+          Hidden meshes and display-layer visibility are respected. Geometry is
+          baked to world space, so skinned and animated rigs transfer cleanly
+          whatever the original hierarchy. USD or Alembic.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">Materials</p>
+        <h3>Arnold rebuilt as USD</h3>
+        <p>
+          <code>aiStandardSurface</code> becomes <code>UsdPreviewSurface</code>:
+          base colour, metalness, roughness, IOR, coat. Other shaders are read
+          best-effort for base colour.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">Glass &amp; SSS</p>
+        <h3>Handled, not flattened</h3>
+        <p>
+          Transmission at or above 0.25 also gets an <b>OmniGlass</b> MDL so RTX
+          refracts properly; subsurface gets <b>OmniSurface</b> with SSS colour,
+          radius and scale. UsdPreviewSurface stays as the non-RTX fallback.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">Textures</p>
+        <h3>Right colour space, first time</h3>
+        <p>
+          Rewired through <code>UsdUVTexture</code>. Data maps get
+          <code>raw</code>, colour maps <code>sRGB</code>, and normal maps the
+          tangent-space remap. Layered or procedural networks are flagged
+          <em>complex</em> so you know to bake them.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">Assignments</p>
+        <h3>Per-face, preserved</h3>
+        <p>
+          Maya face sets such as <code>pShape.f[0:5]</code> become
+          <code>UsdGeom.Subset</code> with <code>materialBind</code>, instead of
+          collapsing to one material per object.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">Lights &amp; cameras</p>
+        <h3>Recreated as UsdLux</h3>
+        <p>
+          Area and mesh lights to RectLight, directional to DistantLight, spot to
+          SphereLight with ShapingAPI, IES and point to SphereLight, skydome to
+          DomeLight with its HDRI. Cameras keep focal length, apertures, clipping
+          and depth of field, with the world matrix baked per frame.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================== HOW ============================== -->
+  <section id="how" class="band">
+    <p class="kicker">How it works</p>
+    <h2>Two scripts, and one file between them</h2>
+    <p class="intro">
+      The sidecar is the contract. Geometry travels as USD or Alembic; everything
+      that a geometry format cannot hold travels as JSON beside it.
+    </p>
+
+    <article class="tool">
+      <div class="tool-head">
+        <span class="badge">01</span>
+        <div>
+          <h3>In Maya — <code>maya_export.py</code></h3>
+          <p>Writes the geometry, plus a <code>&lt;shot&gt;.shaders.json</code> describing every shader, assignment, light and camera.</p>
+        </div>
+      </div>
+      <pre><code>import maya_export
+maya_export.export(output_dir=r"C:/exports", name="Bag",
+                   target="omniverse")   <span class="c"># USD geometry</span>
+
+<span class="c"># -> Bag.usd          visible geometry, baked to world space
+# -> Bag.shaders.json shaders, assignments, lights, cameras</span></code></pre>
+      <ul class="beats">
+        <li>Frame range, step, selection-only, and static-pose options</li>
+        <li><code>bake=True</code> flattens layered Arnold channels via render-to-texture</li>
+        <li>Lights and cameras get their world matrix baked per frame, so animation survives</li>
+      </ul>
+    </article>
+
+    <article class="tool">
+      <div class="tool-head">
+        <span class="badge">02</span>
+        <div>
+          <h3>In Kit — <code>omniverse_import.py</code></h3>
+          <p>Reads the JSON, references the geometry, rebuilds and binds materials, recreates lights and cameras, writes <code>&lt;shot&gt;.omni.usda</code>.</p>
+        </div>
+      </div>
+      <pre><code>/World              <span class="c">Xform, default prim, Y-up, metersPerUnit 0.01</span>
+  /Geo              <span class="c">every top-level prim of the geometry file</span>
+  /Looks            <span class="c">UsdPreviewSurface, plus MDL where it matters</span>
+  /Lights           <span class="c">UsdLux + DomeLight</span>
+  /Cameras          <span class="c">UsdGeom.Camera</span></code></pre>
+      <ul class="beats">
+        <li>An <code>omni.ui</code> window drives it: browse, scale, new scene or append</li>
+        <li>Append wraps the whole import in one undo group — a single Ctrl+Z removes it</li>
+        <li>A lighting slider rescales every imported light live, without re-importing</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- ============================== CRAFT ============================== -->
+  <section id="craft" class="band alt">
+    <p class="kicker">The hard parts</p>
+    <h2>Five failures worth knowing about</h2>
+    <div class="cards notes">
+      <article class="card">
+        <h3>Everything glowed white</h3>
+        <p>
+          <code>aiStandardSurface</code> keeps <code>emissionColor</code> white
+          while its weight is zero. Author emission unconditionally and every
+          material in the shot emits. Emission is only written when the weight is
+          actually above zero.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Half the scene went missing</h3>
+        <p>
+          <code>AddReference(file)</code> composes only the layer's <em>default</em>
+          prim, so siblings vanish without an error. The importer enumerates every
+          root prim and references each one.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Fuzzy matching binds the wrong mesh</h3>
+        <p>
+          Meshes are matched to assignments by exact sanitised name — transform,
+          then shape, then shape minus a trailing <code>Shape</code>. A near-miss
+          that silently paints the wrong object is worse than no binding at all.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Arnold and RTX disagree on brightness</h3>
+        <p>
+          Arnold's local-light intensities are numerically far below what RTX
+          expects, so per-type multipliers are applied — area, point, spot, mesh
+          and IES ×2000, sun and dome ×1 — with a global scale on top.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Kit ran yesterday's code</h3>
+        <p>
+          Kit caches modules aggressively, so a plain <code>import</code> can
+          quietly run a stale copy. The launch snippets read the file from disk
+          and <code>exec</code> it, which guarantees the current code runs.
+        </p>
+      </article>
+      <article class="card">
+        <h3>A flat channel is a warning, not a bug</h3>
+        <p>
+          Layered and procedural networks cannot be expressed as one USD texture,
+          so they are flagged <em>complex</em> with every file involved listed —
+          re-export that channel baked rather than shipping something wrong.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================== CLOSE ============================== -->
+  <section id="close" class="band close">
+    <p class="kicker">Next</p>
+    <h2>Two tools, one pipeline</h2>
+    <p class="intro">
+      This is the front half: getting a real shot into USD with its look intact.
+      The configurator is the back half — making that scene something a customer
+      can drive from a browser.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="configurator.html">← The RTX configurator</a>
+      <a class="btn" href="mailto:gokul23gs@gmail.com?subject=Maya%20to%20Omniverse%20pipeline&amp;body=Hi%20Gokul%2C%0D%0A%0D%0AI%20saw%20the%20Maya%20to%20Omniverse%20tool.%0D%0A%0D%0ACompany%3A%0D%0AWhat%20we%20are%20trying%20to%20move%3A%0D%0A">Get in touch</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Gokul S — Technical 3D Artist · Chennai, Tamil Nadu</p>
+  <p class="small">
+    Maya and Arnold are trademarks of Autodesk; NVIDIA, Omniverse and RTX are
+    trademarks of NVIDIA Corporation. The interior scene shown in the banner is
+    illustrative.
+  </p>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

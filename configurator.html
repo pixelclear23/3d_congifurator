@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>3D Configurator Toolkit — real-time product configurators on NVIDIA Omniverse</title>
+<meta name="description" content="A toolkit for building real-time 3D configurators on NVIDIA Omniverse Kit: record states from a USD stage, author the UI in a browser, stream the RTX render."/>
+<meta name="color-scheme" content="dark"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="styles.css"/>
+<!-- first backdrop frame only; the rest are fetched after load -->
+<link rel="preload" as="image" imagesrcset="assets/hero-1.webp" type="image/webp"/>
+<meta property="og:title" content="3D Configurator Toolkit"/>
+<meta property="og:description" content="Record states from a USD stage, author the UI in a browser, stream the RTX render."/>
+<meta property="og:image" content="assets/shot-viewer.jpg"/>
+<meta property="og:type" content="website"/>
+</head>
+<body data-page="configurator">
+<a class="skip" href="#watch">Skip to content</a>
+
+<header class="site">
+  <a class="brand" href="index.html" title="Back to the reel and CV">
+    <span class="mark" aria-hidden="true"></span>Gokul&nbsp;S</a>
+  <button class="navtoggle" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav id="nav" aria-label="Sections">
+    <a href="#watch">Watch</a>
+    <a href="#tools">The tools</a>
+    <a href="#pipeline">How it works</a>
+    <a href="#craft">Hard parts</a>
+    <a href="index.html">← Reel &amp; CV</a>
+    <a class="ghost" href="maya-to-omniverse.html">Maya → USD →</a>
+  </nav>
+</header>
+
+<!-- Onward to the second tool. -->
+<a class="pagenav next" href="maya-to-omniverse.html" aria-label="Next page: the Maya to Omniverse pipeline">
+  <span class="label">Maya → USD</span>
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+
+<!-- ArtStation-style edge navigation back to page one. -->
+<a class="pagenav prev" href="index.html" aria-label="Previous page: the animation reel">
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  <span class="label">Animation</span>
+</a>
+
+<main id="top">
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero">
+   <!-- Backdrop: RTX stills of the scene the toolkit was built against. Direct
+        children of .hero, so they span the full viewport width rather than the
+        1100px copy column. Frame 1 ships with the page; JS cross-fades the rest. -->
+   <div class="stage" data-slides="hero-2 hero-3 hero-4" aria-hidden="true">
+     <picture class="slide on">
+       <source srcset="assets/hero-1.webp" type="image/webp"/>
+       <img src="assets/hero-1.jpg" width="2000" height="1125" alt=""
+            fetchpriority="high" decoding="async"/>
+     </picture>
+   </div>
+   <div class="scrim" aria-hidden="true"></div>
+
+   <div class="hero-top">
+    <p class="eyebrow">NVIDIA Omniverse Kit · OpenUSD · RTX streaming</p>
+    <h1>A configurator you <em>record</em>, not one you code.</h1>
+    <p class="lede">
+      An artist records what a scene can do, straight from the stage they are already
+      working in. A browser page lays out the interface. A Kit extension applies each
+      choice to the live USD stage and streams the RTX render back.
+    </p>
+
+    <!-- Both in-page: no "view the source" until the toolkit itself is
+         published. The repository holds this site only for now. -->
+    <div class="cta">
+      <a class="btn primary" href="#tools">See the tools</a>
+      <a class="btn" href="#pipeline">How it fits together</a>
+    </div>
+
+    <!-- Each chip says what the number is, in plain words. "6 JSON files, the
+         whole contract" meant nothing without having read the rest first. -->
+    <ul class="chips">
+      <li><b>0</b> lines of 3D code in the customer's browser</li>
+      <li><b>1</b> message type drives every change</li>
+      <li><b>6</b> data files describe everything the scene can do</li>
+    </ul>
+
+    <!-- filled in by main.js; without it the first frame simply stays put -->
+    <div class="dots" role="group" aria-label="Backdrop frame"></div>
+
+    <a class="scrollcue" href="#watch">
+      <span>Scroll to explore the toolkit</span>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M5 8.5 12 15.5 19 8.5"/>
+      </svg>
+    </a>
+   </div><!-- /.hero-top -->
+  </section>
+
+  <!-- ============================== TOOLS ============================== -->
+  <!-- ============================== WATCH ==============================
+       The video stands on its own: its own section, its own screen. Sharing a
+       section with the "Three tools" heading made it read as an illustration
+       of that text, and dragging across it selected the copy above. -->
+  <!-- .pin: this one holds at the top once it arrives, and the sections below
+       scroll up over it -- the same relationship the hero has with this. -->
+  <section id="watch" class="band tile pin">
+    <!-- Marks the moment this section has covered the pinned hero, so the
+         backdrop slideshow can stop rotating behind it. -->
+    <span class="hero-sentinel" aria-hidden="true"></span>
+    <p class="kicker">See it running</p>
+
+    <!-- ===================== explainer video =====================
+         data-vimeo takes "<id>?h=<hash>", a bare id, or a full player URL.
+         main.js draws a play button over the still and only then loads the
+         Vimeo iframe -- the player is about a megabyte of script, so nobody
+         who does not press play pays for it, and the still acts as the poster.
+         For a self-hosted file use data-video="assets/explainer.mp4" instead.
+         =========================================================== -->
+    <!-- data-vimeo-ar is the video's real aspect ratio. It is NOT 16:9, and a
+         16:9 box left white letterbox bars across the top and bottom, because
+         the player's canvas is white behind the video.
+         Get it precisely -- ask oEmbed for a big thumbnail:
+           vimeo.com/api/oembed.json?url=https://vimeo.com/<id>/<hash>&width=1280
+         and divide width by height. This one is 1280x701 = 1.826. The default
+         thumbnail size (426x234) rounds to 1.8205, which is close enough to
+         look fixed and still leave a hairline. -->
+    <figure class="shot media player" data-vimeo="1229514908?h=ee84c73d37"
+            data-vimeo-ar="1.826">
+      <div class="frame">
+        <a href="assets/shot-viewer.jpg">
+          <picture>
+            <source srcset="assets/shot-viewer.webp" type="image/webp"/>
+            <img src="assets/shot-viewer.jpg" width="1920" height="1047"
+                 loading="lazy" decoding="async"
+                 alt="The streamed configurator in a browser: a path-traced dark green sports car on a turntable, with view buttons top left, nine paint swatches along the bottom and tabs for environment, car paint, rims, door and lights."/>
+          </picture>
+        </a>
+      </div>
+      <figcaption>
+        The toolkit end to end — recording states in Composer, laying out the
+        interface, and the finished configurator streaming to a browser. Every
+        pixel of the car is rendered by RTX on the host; the controls are plain DOM.
+      </figcaption>
+    </figure>
+
+  </section>
+
+  <!-- ============================== DEMO ==============================
+       Its own tile, rising over the video the same way the video rises over
+       the hero. The ask deserves the whole width rather than being tucked
+       under a caption. mailto with a prefilled subject and body: fewer blank
+       fields to face, and the reply arrives with the details already in it. -->
+  <section id="demo" class="band alt tile">
+    <p class="kicker">Live demo</p>
+
+    <div class="demo-ask reveal-up">
+      <p>
+        <b>Want to drive it yourself?</b>
+        A live stream serves one viewer per GPU instance, so demos run by
+        arrangement — you get the real thing, not a recording.
+      </p>
+      <a class="btn primary" href="mailto:gokul23gs@gmail.com?subject=Live%20demo%20request%20-%20RTX%20configurator&amp;body=Hi%20Gokul%2C%0D%0A%0D%0AI%27d%20like%20to%20see%20the%20configurator%20running%20live.%0D%0A%0D%0ACompany%3A%0D%0AWhat%20we%27d%20like%20to%20see%3A%0D%0APreferred%20times%20%28with%20timezone%29%3A%0D%0A">
+        Request a live demo
+      </a>
+    </div>
+
+    <!-- There is a lot of page below this; the video plus one button reads like
+         an ending. A real link, so it also works as navigation. -->
+    <a class="scrollmore reveal-up" href="#tools">
+      <span>Keep scrolling — how it is built</span>
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+        <path d="M12 4.5v13M6.5 12.5 12 18l5.5-5.5"/>
+      </svg>
+    </a>
+  </section>
+
+  <!-- ============================== TOOLS ============================== -->
+  <section id="tools" class="band">
+    <p class="kicker">What I built</p>
+    <h2>Three tools and one extension, sharing a folder of JSON</h2>
+
+    <!-- 1 -->
+    <article class="tool">
+      <div class="tool-head">
+        <span class="badge">01</span>
+        <div>
+          <h3>Capture — inside Omniverse Composer</h3>
+          <p>Select prims in the stage, name the state, press capture. No re-authoring.</p>
+        </div>
+      </div>
+      <figure class="shot">
+        <a href="assets/shot-capture.jpg">
+          <picture>
+            <source srcset="assets/shot-capture.webp" type="image/webp"/>
+            <img src="assets/shot-capture.jpg" width="1920" height="1164"
+                 loading="lazy" decoding="async"
+                 alt="Omniverse Composer with the capture tool docked over the viewport. The viewport shows a bright green car on a turntable. The tool's left pane has its mesh variant and material capture sections open; the right pane lists every recorded variant with Apply, Select and Load buttons."/>
+          </picture>
+        </a>
+        <figcaption>The paint just saved as <em>Punchy Green</em> is the paint on the car in the viewport. The stage is the source of truth.</figcaption>
+      </figure>
+      <ul class="beats">
+        <li>Materials, geometry variants, part animations, cameras, environments, lights</li>
+        <li>Animation sampled frame by frame, so no rig is needed at runtime</li>
+        <li>The right pane is a live console over the JSON, not a copy of it</li>
+      </ul>
+    </article>
+
+    <!-- 2 -->
+    <article class="tool">
+      <div class="tool-head">
+        <span class="badge">02</span>
+        <div>
+          <h3>Build — the interface, in the browser</h3>
+          <p>Drop in categories, icons, docks and sounds against a live preview, then save straight into the project.</p>
+        </div>
+      </div>
+      <figure class="shot">
+        <a href="assets/shot-builder.jpg">
+          <picture>
+            <source srcset="assets/shot-builder.webp" type="image/webp"/>
+            <img src="assets/shot-builder.jpg" width="1920" height="1061"
+                 loading="lazy" decoding="async"
+                 alt="The Configurator Builder page: a toolbar with Edit, Preview and Code tabs plus Save to Project, Icons to files and Export JSON; a live canvas on the left; and an inspector on the right with category cards for Camera, Environment and an expanded Car Paint."/>
+          </picture>
+        </a>
+        <figcaption>Swatch colours come from the recorded shader values, so a new paint arrives with the right chip already on it.</figcaption>
+      </figure>
+      <ul class="beats">
+        <li>Two layouts: a tabbed bottom bar, or chips placed anywhere by percentage</li>
+        <li>Editable HTML, CSS and JS per project, so a client's brand does not fight the tool</li>
+        <li>One button bakes a launcher that runs the whole thing with Composer closed</li>
+      </ul>
+    </article>
+
+    <!-- 3 -->
+    <article class="tool">
+      <div class="tool-head">
+        <span class="badge">03</span>
+        <div>
+          <h3>Apply — a Kit extension on the live stage</h3>
+          <p>The only part that touches USD. The browser sends a name; everything is resolved in Kit.</p>
+        </div>
+      </div>
+      <pre><code>Configurator.send('materials', 'Carpaint :: Rosso Vincente');
+Configurator.send('cameras',   'Interior View');
+Configurator.send('exit_view', '');   <span class="c">// leave the view, restore the car</span></code></pre>
+      <ul class="beats">
+        <li>That is the entire browser-side API — swap the UI, nothing else changes</li>
+        <li>Seven message types: materials, meshes, animations, cameras, lights, environments, exit</li>
+        <li>Every write lands in the USD <b>session layer</b>, so the scene on disk is never touched</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- ============================ PIPELINE ============================ -->
+  <section id="pipeline" class="band alt">
+    <p class="kicker">How it works</p>
+    <h2>Each stage hands the next one a file, never a live object</h2>
+    <p class="intro">
+      Which is why any stage can be re-run alone: re-capture a door without touching the UI,
+      restyle the UI without opening Composer.
+    </p>
+    <figure>
+      <img src="assets/pipeline.svg" loading="lazy" decoding="async"
+           alt="Four stages: capture in Composer writes six JSON files; the builder writes ui_config.json; the streamed page sends a configuratorApply message; the Kit extension applies it to the live USD stage and streams frames back."/>
+    </figure>
+
+    <details class="deep">
+      <summary>For engineers: the wire format and the data model</summary>
+      <figure>
+        <img src="assets/message-flow.svg" loading="lazy" decoding="async"
+             alt="A click in the overlay becomes a configuratorApply message over the WebRTC data channel, is republished on the Kit message bus, dispatched to one of seven handlers, and written into the USD session layer; frames return as video."/>
+      </figure>
+      <figure>
+        <img src="assets/data-model.svg" loading="lazy" decoding="async"
+             alt="The six captured JSON files — materials, meshes, animations, cameras, environments and lights — feeding the generated ui_config.json and captured_data.json."/>
+      </figure>
+      <ul class="beats">
+        <li><b>materials</b> — writes every recorded shader input on the material and its descendants, guarded per parameter</li>
+        <li><b>cameras</b> — switches the viewport, applies the view's conditions, flies a recorded move on the wall clock</li>
+        <li><b>meshes / environments</b> — show one set, hide the others; the hide-set is derived from data, never remembered</li>
+        <li><b>lights</b> — restores recorded intensity, colour and temperature, then applies paired emissive materials</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- ============================== CRAFT ============================== -->
+  <section id="craft" class="band">
+    <p class="kicker">The hard parts</p>
+    <h2>Four failures that shaped the design</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>The stream must be headless</h3>
+        <p>
+          With a window, Windows clamps it to the work area — 2560 becomes 2517 — and the
+          livestream plugin then rejects every frame. Black video, while the log says
+          "RTX ready".
+        </p>
+      </article>
+      <article class="card">
+        <h3>One encoder, one owner</h3>
+        <p>
+          Composer holding the streaming ports kills the app with <code>NVST_R_BUSY</code>.
+          The launcher now names the offending process up front instead of leaving it to be
+          debugged.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Record the inverse, don't guess</h3>
+        <p>
+          Lights invert; a material has no opposite. So a material condition stores an
+          explicit on/off pair, and a half-filled pair is refused at capture time.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Derive state, don't remember it</h3>
+        <p>
+          What to hide is recomputed from the data every time. Correct on the first click in
+          a cold app, and self-correcting after anyone edits visibility by hand.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================== CLOSE ============================== -->
+  <section id="close" class="band alt close">
+    <p class="kicker">Stack</p>
+    <ul class="tags">
+      <li>Python</li><li>Omniverse Kit</li><li>OpenUSD</li><li>omni.ui</li>
+      <li>Kit extensions</li><li>RTX &amp; DLSS</li><li>WebRTC</li><li>aiohttp</li>
+      <li>Vanilla JS</li><li>Vite</li>
+    </ul>
+    <h2>Want to see it move?</h2>
+    <p class="intro">
+      A live stream serves one viewer per GPU instance, so the RTX demo runs by arrangement —
+      a short session, your questions, the real thing rather than a video.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="mailto:gokul23gs@gmail.com?subject=Live%20demo%20request%20-%20RTX%20configurator&amp;body=Hi%20Gokul%2C%0D%0A%0D%0AI%27d%20like%20to%20see%20the%20configurator%20running%20live.%0D%0A%0D%0ACompany%3A%0D%0AWhat%20we%27d%20like%20to%20see%3A%0D%0APreferred%20times%20%28with%20timezone%29%3A%0D%0A">Request a live demo</a>
+      <a class="btn" href="index.html">← Reel &amp; CV</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Gokul S — Senior 3D Artist. Built with Omniverse Kit, OpenUSD and a lot of log reading.</p>
+  <p class="small">
+    The car model in the screenshots is a third-party asset used for testing; it is not part
+    of this toolkit. NVIDIA, Omniverse and RTX are trademarks of NVIDIA Corporation.
+  </p>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

@@ -79,3 +79,32 @@ the space is still reserved before the image loads.
   the redirect; the `<a href>` values in `index.html` and the URL above would need updating.
 - The car model referenced in the "scene it was built against" section is a third-party
   asset. It is described, not redistributed, and the page says so.
+
+## Dropping in the explainer video
+
+The lead media slot in the "What I built" section is the video frame. It currently shows
+`shot-viewer.*` as a placeholder. When the cut is ready:
+
+1. Put the file in as `website/assets/explainer.mp4` (H.264 + AAC in an MP4 is the safe
+   choice; a `.webm` also works and is typed automatically).
+2. In `index.html`, set the attribute on that figure:
+   ```html
+   <figure class="shot media player" data-video="assets/explainer.mp4">
+   ```
+
+That is the whole change. `main.js` then draws a play button over the still and swaps in a
+`<video controls autoplay playsinline>` on the first click, using the still as the poster so
+there is no black flash. Nothing is downloaded until a visitor asks for it, and the
+click-to-enlarge link on the still is removed at that point so it cannot hijack the video
+controls.
+
+While `data-video` is empty there is deliberately no play button — the page never advertises
+a video that does not exist yet.
+
+Notes for the file itself:
+
+- Keep the same 16:9-ish shape as the placeholder, or update the `width`/`height` attributes
+  on the `<img>` so the reserved space still matches and the page does not jump.
+- The frame breaks out to 1320px wide, so encode at 1920×1080 or better.
+- Add captions if you can: a `<track kind="captions" src="...vtt">` line inside the `<video>`
+  that `main.js` builds. Recruiters often watch with the sound off.
