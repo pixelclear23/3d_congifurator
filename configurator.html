@@ -224,7 +224,7 @@
                  alt="The Configurator Builder page: a toolbar with Edit, Preview and Code tabs plus Save to Project, Icons to files and Export JSON; a live canvas on the left; and an inspector on the right with category cards for Camera, Environment and an expanded Car Paint."/>
           </picture>
         </a>
-        <figcaption>Swatch colours come from the recorded shader values, so a new paint arrives with the right chip already on it.</figcaption>
+        <figcaption>Each paint dot is coloured from the shader values that were recorded, so a newly captured paint turns up in the bar with the right colour on it already — nobody types a hex code.</figcaption>
       </figure>
       <ul class="beats">
         <li>Two layouts: a tabbed bottom bar, or chips placed anywhere by percentage</li>
@@ -238,17 +238,65 @@
       <div class="tool-head">
         <span class="badge">03</span>
         <div>
-          <h3>Apply — a Kit extension on the live stage</h3>
-          <p>The only part that touches USD. The browser sends a name; everything is resolved in Kit.</p>
+          <h3>Apply — the browser asks by name, Kit does the work</h3>
+          <p>
+            A customer taps the red paint dot at the bottom of the screen. The
+            browser does not send a colour, a texture or any 3D data — it sends
+            two short strings, a category and a name, about forty characters.
+            The extension inside the running app looks that name up in the
+            captured JSON and writes the 168 shader values behind it onto the car.
+          </p>
         </div>
       </div>
-      <pre><code>Configurator.send('materials', 'Carpaint :: Rosso Vincente');
-Configurator.send('cameras',   'Interior View');
-Configurator.send('exit_view', '');   <span class="c">// leave the view, restore the car</span></code></pre>
+      <!-- The actual swatch from the running configurator, with a press and a
+           ripple, so the sentence above has a picture of the thing it means. -->
+      <div class="tapdemo">
+        <figure class="tap">
+          <span class="dot">
+            <picture>
+              <source srcset="assets/swatch-red.webp" type="image/webp"/>
+              <img src="assets/swatch-red.png" width="192" height="192"
+                   loading="lazy" decoding="async"
+                   alt="The Rosso Vincente paint swatch from the configurator: a glossy red sphere."/>
+            </picture>
+            <span class="ring" aria-hidden="true"></span>
+            <svg class="cursor" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path d="M5 2.5 19 12l-6.4 1.3L9.6 19z"/>
+            </svg>
+          </span>
+          <figcaption>Rosso Vincente</figcaption>
+        </figure>
+
+        <p class="tapsays">
+          <b>One tap.</b> No colour, no texture, no geometry leaves the browser —
+          only this:
+          <code>'materials', 'Carpaint :: Rosso Vincente'</code>
+        </p>
+      </div>
+
+      <pre><code><span class="c">// the whole vocabulary: a category, and the name of a recorded state</span>
+Configurator.send('materials', 'Carpaint :: Rosso Vincente');  <span class="c">// repaint it</span>
+Configurator.send('cameras',   'Interior View');               <span class="c">// and the doors,
+                                                               // lights and materials
+                                                               // that view carries</span>
+Configurator.send('exit_view', '');                            <span class="c">// put it all back</span></code></pre>
       <ul class="beats">
-        <li>That is the entire browser-side API — swap the UI, nothing else changes</li>
-        <li>Seven message types: materials, meshes, animations, cameras, lights, environments, exit</li>
-        <li>Every write lands in the USD <b>session layer</b>, so the scene on disk is never touched</li>
+        <li>
+          <b>There is no second function.</b> The browser holds no scene, no
+          materials, no geometry — so the interface is disposable. Rewrite it,
+          or build a different one entirely, and the Kit side does not change.
+        </li>
+        <li>
+          <b>Seven words is the whole protocol:</b> materials, meshes,
+          animations, cameras, lights, environments, exit. One handler each.
+        </li>
+        <li>
+          <b>Nothing is ever saved.</b> Every change is written to USD's
+          <em>session layer</em> — a layer that overrides the scene in memory
+          without touching the file. Fifty customers can try fifty combinations;
+          the <code>.usdc</code> on disk is untouched and a restart is a clean
+          reset.
+        </li>
       </ul>
     </article>
   </section>

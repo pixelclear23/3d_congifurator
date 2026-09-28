@@ -177,8 +177,9 @@
     <p class="kicker">How it works</p>
     <h2>Two scripts, and one file between them</h2>
     <p class="intro">
-      The sidecar is the contract. Geometry travels as USD or Alembic; everything
-      that a geometry format cannot hold travels as JSON beside it.
+      That second file is the contract between them. Geometry travels as USD or
+      Alembic; everything a geometry format cannot carry — shaders, which face
+      got which material, lights, cameras — travels as JSON beside it.
     </p>
 
     <article class="tool">
@@ -240,9 +241,10 @@ maya_export.export(output_dir=r"C:/exports", name="Bag",
       <article class="card">
         <h3>Half the scene went missing</h3>
         <p>
-          <code>AddReference(file)</code> composes only the layer's <em>default</em>
-          prim, so siblings vanish without an error. The importer enumerates every
-          root prim and references each one.
+          <code>AddReference(file)</code> pulls in only the file's <em>default</em>
+          object. A USD file can hold several objects at its top level, and the
+          rest disappear with no error at all. The importer walks every top-level
+          object and brings each one in by name.
         </p>
       </article>
       <article class="card">
