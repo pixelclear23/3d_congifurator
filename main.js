@@ -48,33 +48,53 @@
     });
   }
 
-  /* ---- hero backdrop -------------------------------------------------- *
-   * Frame 1 is in the HTML so the hero is never empty. The rest are built
-   * here, after load, because a backdrop must not compete with the content
-   * for bandwidth. They are fetched one at a time and only added to the
+  /* ---- cross-faded frame sets ----------------------------------------- *
+   * Two of these: the configurator hero backdrop and the banner at the top of
+   * the Maya page. Frame 1 is in the HTML so neither is ever empty. The rest
+   * are built here, after load, because a picture set must not compete with the
+   * content for bandwidth. They are fetched one at a time and only added to the
    * rotation once decoded, so a slow connection degrades to fewer frames
-   * rather than to a blank flash mid-fade.                                */
-  var stage = document.querySelector('.stage');
-  var dots = document.querySelector('.dots');
-
-  if (stage) {
+   * rather than to a blank flash mid-fade.
+   *
+   * Everything that differs between the two comes off the container:
+   *   data-slides    the asset basenames to load, in order
+   *   data-alts      pipe-separated alt text, for a set that is content
+   *                  rather than decoration (the backdrop passes none)
+   *   data-sentinel  what to watch instead of the container itself, for a
+   *                  sticky set that never leaves the viewport             */
+  function slideshow(stage) {
     var names = (stage.dataset.slides || '').split(/\s+/).filter(Boolean);
+    var alts = (stage.dataset.alts || '').split('|');
     var slides = [stage.querySelector('.slide')].filter(Boolean);
+    if (!slides.length) return;
+
+    /* Shape is taken from the frame that shipped in the markup, so one function
+       serves a 2000px backdrop and a 1920px banner without knowing about
+       either. Reserving the space also keeps the fade from reflowing. */
+    var seed = slides[0].querySelector('img');
+    var seedW = (seed && seed.getAttribute('width')) || '';
+    var seedH = (seed && seed.getAttribute('height')) || '';
+
+    /* Scoped to this set: on a page with two of them, a document-wide lookup
+       would wire both to the same row of dots. */
+    var dots = stage.parentNode.querySelector('.dots');
+    var dotWhat = (dots && dots.getAttribute('aria-label') || 'frame').toLowerCase();
+
     var HOLD = 6500;      // ms a frame stays before the next fade
     var index = 0;
     var timer = null;
     var visible = true;
 
-    function buildSlide(name) {
+    function buildSlide(name, i) {
       var pic = document.createElement('picture');
       pic.className = 'slide';
       var src = document.createElement('source');
       src.type = 'image/webp';
       src.srcset = 'assets/' + name + '.webp';
       var img = document.createElement('img');
-      img.width = 2000;
-      img.height = 1125;
-      img.alt = '';
+      if (seedW) img.setAttribute('width', seedW);
+      if (seedH) img.setAttribute('height', seedH);
+      img.alt = (alts[i] || '').trim();     // empty = decorative, which is right for a backdrop
       img.decoding = 'async';
       pic.appendChild(src);
       pic.appendChild(img);
@@ -84,14 +104,14 @@
     // Sequential fetch: each frame waits for the previous one to finish.
     function loadNext(i) {
       if (i >= names.length) return;
-      var made = buildSlide(names[i]);
+      var made = buildSlide(names[i], i);
       made.img.addEventListener('load', function () {
         stage.appendChild(made.pic);
         slides.push(made.pic);
         addDot(slides.length - 1);
         // Arm the rotation here, not once at startup: at startup there is a
         // single frame and play() correctly declines to cross-fade one image
-        // with itself. Without this the backdrop stayed static.
+        // with itself. Without this the set stayed static.
         play();
         loadNext(i + 1);
       });
@@ -117,12 +137,12 @@
       if (timer) { clearInterval(timer); timer = null; }
     }
 
-    /* --- dots: also the only hint that the backdrop is a set --- */
+    /* --- dots: also the only hint that this is a set at all --- */
     function addDot(i) {
       if (!dots || reduced) return;
       var b = document.createElement('button');
       b.type = 'button';
-      b.setAttribute('aria-label', 'Show backdrop frame ' + (i + 1));
+      b.setAttribute('aria-label', 'Show ' + dotWhat + ' ' + (i + 1));
       b.setAttribute('aria-pressed', i === index ? 'true' : 'false');
       b.addEventListener('click', function () {
         show(i);
@@ -146,16 +166,19 @@
       visible ? play() : pause();
     });
 
-    /* Nor once the hero is covered. The hero is sticky, so it never leaves the
-       viewport and cannot report its own visibility -- the sentinel at the top
-       of the next section does it instead: once that has scrolled above the
-       fold, the hero is behind it and there is nothing to animate. */
+    /* Nor once the set is off screen. An in-flow set reports that itself; the
+       hero cannot, because it is sticky and never leaves the viewport -- the
+       sentinel at the top of the next section stands in for it: once that has
+       scrolled above the fold, the hero is behind it and there is nothing to
+       animate. The "not yet scrolled past" clause only applies to that case,
+       since an in-flow set genuinely is idle while it is still below. */
     if (IO) {
-      var sentinel = document.querySelector('.hero-sentinel') || stage;
+      var sel = stage.dataset.sentinel;
+      var sentinel = (sel && document.querySelector(sel)) || stage;
       new IO(function (entries) {
         var r = entries[0];
-        var below = (r.boundingClientRect || {}).top > 0;   // not yet scrolled past
-        (r.isIntersecting || below) ? play() : pause();
+        var below = (r.boundingClientRect || {}).top > 0;
+        (r.isIntersecting || (sel && below)) ? play() : pause();
       }, { threshold: 0 }).observe(sentinel);
     }
 
@@ -165,6 +188,8 @@
       play();
     }
   }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-slides]'), slideshow);
 
   /* ---- arrive on scroll ----------------------------------------------- *
    * The hidden state is ADDED here rather than living in the stylesheet: if

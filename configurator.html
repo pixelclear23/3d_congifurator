@@ -51,7 +51,8 @@
    <!-- Backdrop: RTX stills of the scene the toolkit was built against. Direct
         children of .hero, so they span the full viewport width rather than the
         1100px copy column. Frame 1 ships with the page; JS cross-fades the rest. -->
-   <div class="stage" data-slides="hero-2 hero-3 hero-4" aria-hidden="true">
+   <div class="stage" data-slides="hero-2 hero-3 hero-4"
+        data-sentinel=".hero-sentinel" aria-hidden="true">
      <picture class="slide on">
        <source srcset="assets/hero-1.webp" type="image/webp"/>
        <img src="assets/hero-1.jpg" width="2000" height="1125" alt=""

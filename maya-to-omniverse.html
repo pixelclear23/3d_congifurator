@@ -41,15 +41,27 @@
   <!-- ============================= BANNER =============================
        The banner is 16:9 and full of readable labels, so it gets its own
        full-width block rather than being squeezed into a one-screen hero
-       beside the headline -- which is what pushed it off the right edge. -->
+       beside the headline -- which is what pushed it off the right edge.
+
+       It is a frame set: the bag shot first, because it is the one that shows
+       the transfer itself, then RTX renders of the car that came across the
+       same way. Frame 1 ships with the page; main.js fetches the rest after
+       load and cross-fades them, so the banner is never empty and the extra
+       frames never compete with the copy for bandwidth. Every frame is
+       1920x1080, which is what keeps the fade from jumping. -->
   <section id="banner" class="band bannerband">
     <figure class="shot banner">
-      <picture>
-        <source srcset="assets/shot-mayabridge.webp" type="image/webp"/>
-        <img src="assets/shot-mayabridge.jpg" width="1920" height="1080"
-             fetchpriority="high" decoding="async"
-             alt="The Maya to Omniverse pipeline as a banner: a Maya scene with its outliner on one side, the transfer step in the middle, and the same shot rebuilt and lit in NVIDIA Omniverse on the other."/>
-      </picture>
+      <div class="slides" data-slides="car-1 car-2 car-3 car-4"
+           data-alts="A Maserati MC20 head on with its headlights lit, rendered with RTX in Omniverse after crossing over from Maya.|The same MC20 in full side profile on a studio floor, carbon roof and body reflections intact.|The MC20 from a rear three-quarter angle, rear wing and tail lights catching the studio light.|A close front three-quarter detail of the MC20, trident badge and headlight glass.">
+        <picture class="slide on">
+          <source srcset="assets/shot-mayabridge.webp" type="image/webp"/>
+          <img src="assets/shot-mayabridge.jpg" width="1920" height="1080"
+               fetchpriority="high" decoding="async"
+               alt="The Maya to Omniverse pipeline as a banner: a Maya scene with its outliner on one side, the transfer step in the middle, and the same shot rebuilt and lit in NVIDIA Omniverse on the other."/>
+        </picture>
+      </div>
+      <!-- filled in by main.js; without it the first frame simply stays put -->
+      <div class="dots" role="group" aria-label="Banner frame"></div>
     </figure>
   </section>
 

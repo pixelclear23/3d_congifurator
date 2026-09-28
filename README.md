@@ -44,18 +44,38 @@ three explanatory diagrams are hand-authored SVG, because no screenshot can show
 flow — they also stay legible at any size, theme with the page and carry real text for
 search and screen readers.
 
-## The hero backdrop
+## Cross-faded frame sets
 
-`hero-1` ships with the page; `main.js` fetches the frames listed in the `data-slides`
-attribute on `.stage` one at a time after load, and only joins each to the rotation once it
-has decoded. It stops while the tab is hidden or the hero is scrolled away, and under
-`prefers-reduced-motion` it neither animates nor fetches the extra frames at all.
+Two of them: the configurator hero backdrop (`.stage`) and the banner at the top of the Maya
+page (`figure.banner .slides`). One function in `main.js` drives both — it runs over every
+element carrying `data-slides`, and everything that differs comes off the container:
 
-The frames come from `C:\Library\omiverse_project\Renders\website_image`. That folder also
-holds white clay / AO passes, which are skipped: they are far too bright to sit behind light
-text. To swap the set, drop new renders in, regenerate at 2000px wide (WebP `quality=72`,
-JPEG `quality=80`) flattened onto `#0a0c0f`, and list them in `data-slides`. All frames must
-share one aspect ratio or the cross-fade will jump.
+| attribute       | what it does                                                              |
+| --------------- | ------------------------------------------------------------------------- |
+| `data-slides`   | asset basenames to load, in order                                         |
+| `data-alts`     | pipe-separated alt text, for a set that is content rather than decoration |
+| `data-sentinel` | what to observe instead of the container, for a set that cannot report its own visibility |
+
+Frame 1 ships in the markup, so neither set is ever empty; the rest are fetched one at a
+time after load and only join the rotation once decoded. The size and shape of the built
+frames are copied from the frame in the markup, so a 2000px backdrop and a 1920px banner
+both work without the script knowing which is which. Rotation stops while the tab is hidden
+or the set is off screen, and under `prefers-reduced-motion` it neither animates nor fetches
+the extra frames at all — the markup frame is all a visitor gets, which is why frame 1 should
+be the one that matters most.
+
+Every frame in a set must share one aspect ratio or the cross-fade will jump. The banner set
+is the bag shot followed by four RTX frames of the car (`car-1`..`car-4`, from
+`Renders\mazarati_renders`, one per camera — the near-duplicate takes and the AO/clay passes
+in that folder are skipped), all 1920×1080. Backdrop frames are cropped to fill; banner
+frames are fitted, because the bag shot carries labels that must not be cut.
+
+The backdrop frames come from `C:\Library\omiverse_project\Renders\website_image`, which also
+holds white clay / AO passes; those are skipped, being far too bright to sit behind light text.
+To swap a set, drop new renders in, regenerate them (backdrop: 2000px wide, WebP `quality=72`,
+JPEG `quality=80`; banner: 1920px wide, WebP `quality=84 method=6`, progressive JPEG
+`quality=86`) flattened onto `#0a0c0f` so no alpha can punch a white hole, and list them in
+`data-slides` — adding a matching entry to `data-alts` for the banner.
 
 To regenerate the screenshot derivatives after replacing a source capture, resize to 1920px
 wide and export both formats (Pillow: `quality=84, method=6` for WebP, `quality=86,
