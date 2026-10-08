@@ -16,10 +16,15 @@
   --accent-soft:#8fd0ff;
   --green:#76b900;
   --maxw:1100px;
+  /* The wide track: the banner's cap, and the intro's, so the two line up
+     instead of the intro reading as indented under a much wider banner. */
+  --wide:1500px;
   --headerh:61px;   /* sticky header: 12+37+12 = 61 including its border */
   --font:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
   --mono:Consolas,"SF Mono",ui-monospace,Menlo,monospace;
   --pad:max(22px,calc((100vw - var(--maxw))/2));
+  /* 18px a side, matching the banner's own `100vw - 36px` limit */
+  --pad-wide:max(18px,calc((100vw - var(--wide))/2));
 }
 
 *{box-sizing:border-box}
@@ -264,6 +269,10 @@ figure.shot{
   box-shadow:0 20px 50px -28px rgba(0,0,0,.95);
 }
 figure.shot a{display:block;line-height:0;cursor:zoom-in}
+/* ...but a link in the caption is prose, not a click-to-enlarge wrapper. Left
+   to the rule above it becomes a block with no line height, which breaks the
+   sentence around it onto its own crushed line. */
+figure.shot figcaption a{display:inline;line-height:inherit;cursor:pointer}
 figure.shot img{width:100%}
 figure.shot a:hover img{opacity:.93}
 /* the section's lead screenshot gets a little more air than a stacked one */
@@ -568,7 +577,7 @@ footer p{margin:0 0 6px;max-width:none}
 .bannerband{padding-top:26px;padding-bottom:0;border-top:0}
 figure.banner{
   --banner-ar:1.7778;                /* 2560x1440 */
-  width:min(1500px,
+  width:min(var(--wide),
             calc(100vw - 36px),
             calc((100svh - 210px) * var(--banner-ar)));
   margin:0;margin-left:50%;transform:translateX(-50%);
@@ -592,26 +601,61 @@ figure.banner .slide img,figure.banner .slide.on img{
 figure.banner .dots{justify-content:center;margin:0;padding:12px 0 10px}
 
 /* ---- copy beside a UI panel -------------------------------------------
-   The headline still spans the whole column; only the lede and the chips give
-   up room, because those are the parts that were leaving it empty. The panel
-   column is capped at the screenshot's own width so it is never resampled up,
-   and it shrinks with the column rather than overflowing it. */
+   The intro borrows the banner's track so both edges line up with it: the copy
+   starts at the banner's left edge, the panel ends at its right. */
+/* Scoped to the page that has a banner: the wide track exists so the intro can
+   line up with the banner above it. On a page with no banner there is nothing to
+   line up with, and a 1500px intro over 1100px sections just looks wrong. */
+[data-page="mayabridge"] #intro{padding-left:var(--pad-wide);padding-right:var(--pad-wide)}
+/* The panel column is the screenshot's own width, never more: a UI capture is
+   small text on flat greys, and resampling it up softens every label. The copy
+   takes whatever is left, which the headline and the chips fill -- only the
+   lede stays narrow, because 64 characters is as wide as a line should read. */
+/* --panel-w is the captured window's own width. The column is sized to it so a
+   UI capture is shown 1:1 on both pages -- stretching one to fill a column
+   softens every label, which is the whole reason these are not JPEGs either. */
 .introsplit{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,550px);
-  gap:30px 52px;align-items:start;margin-top:4px;
+  --panel-w:550px;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,var(--panel-w));
+  gap:34px 64px;align-items:start;
 }
-.introsplit > div > .lede:last-child,.introsplit > div > :last-child{margin-bottom:0}
+[data-page="organizer"] .introsplit{--panel-w:340px}
+.introsplit > div > :last-child{margin-bottom:0}
 /* min(), not max-width: a max-width cannot shrink the figure below the panel's
    own 550px, so on a phone it would push the page wider than the screen and
    take every other line of copy off the right edge with it. */
-figure.panelshot{margin:0;justify-self:end;width:min(100%,550px)}
+figure.panelshot{margin:0;justify-self:end;width:min(100%,var(--panel-w,550px))}
 figure.panelshot img{display:block}
 
-@media (max-width:980px){
-  /* Two columns stop paying for themselves once the copy drops below about 45
-     characters a line: stack, and let the panel run to the column edge. */
-  .introsplit{grid-template-columns:minmax(0,1fr);gap:26px}
+@media (max-width:1200px){
+  /* Below this the copy column drops under about 45 characters a line, which is
+     worse than stacking. Stack, and hand the intro back the normal page track
+     so it lines up with every other section instead of the banner. */
+  [data-page="mayabridge"] #intro{padding-left:var(--pad);padding-right:var(--pad)}
+  .introsplit{grid-template-columns:minmax(0,1fr);gap:28px}
   figure.panelshot{justify-self:start}
+}
+
+/* ---- a third-party post embed ----------------------------------------
+   LinkedIn's iframe reflows its text instead of scaling, and never reports its
+   own height, so this is sized rather than given a ratio: near-native width,
+   fixed height, and more height on narrow screens where the post text wraps to
+   more lines. Centred, because a 504px card hard against the left of a 1100px
+   column reads as a mistake. */
+/* It takes its frame and its column from .shot and .panelshot; all that is left
+   is a height. A ratio would not work: their iframe reflows its text instead of
+   scaling, and never reports how tall it has ended up.
+
+   --post-h is the one number to tune. LinkedIn's own snippet says 399px, but at
+   that height their player crops the top of the frame instead of letterboxing
+   it. Too tall gives a black band under the video, too short cuts the frame. */
+figure.postembed{--post-h:460px}
+figure.postembed iframe{display:block;width:100%;height:var(--post-h);border:0}
+/* The card is wider than a Kit panel, so this section gets its own column. */
+[data-page="organizer"] #watch .introsplit{--panel-w:504px}
+@media (max-width:560px){
+  /* narrower card, so the post's title and strapline wrap to more lines */
+  figure.postembed{--post-h:540px}
 }
 
 /* ---- card variants used by the tool pages ---------------------------- */

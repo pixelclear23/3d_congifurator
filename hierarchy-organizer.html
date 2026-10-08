@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Hierarchy Organizer — group a USD selection without it moving · Gokul S</title>
+<meta name="description" content="A one-button Omniverse Kit extension that reparents a selection into clean Xform groups under /scene and rewrites the transforms so nothing shifts in the viewport."/>
+<meta name="color-scheme" content="dark"/>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="styles.css"/>
+<meta property="og:title" content="Hierarchy Organizer — group a USD selection without it moving"/>
+<meta property="og:description" content="Reparenting in the Stage outliner moves your geometry. This does the matrix work instead."/>
+<meta property="og:type" content="website"/>
+<!-- No og:image yet: the only visual is vector, and SVG previews are poorly
+     supported by link scrapers. Add one with the panel capture. -->
+</head>
+<body data-page="organizer">
+<a class="skip" href="#intro">Skip to content</a>
+
+<header class="site">
+  <a class="brand" href="index.html" title="Back to the reel and CV">
+    <span class="mark" aria-hidden="true"></span>Gokul&nbsp;S</a>
+  <button class="navtoggle" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav id="nav" aria-label="Sections">
+    <a href="#watch">Watch</a>
+    <a href="#how">What it does</a>
+    <a href="#hard">Where the edges are</a>
+    <a href="maya-to-omniverse.html">← Maya → USD</a>
+    <a class="ghost" href="index.html">Reel &amp; CV</a>
+  </nav>
+</header>
+
+<!-- Gallery navigation: this is the last page, so only a way back. -->
+<a class="pagenav prev" href="maya-to-omniverse.html" aria-label="Previous page: the Maya to Omniverse pipeline">
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  <span class="label">Maya → USD</span>
+</a>
+
+<main id="top">
+
+  <!-- ============================== INTRO ============================== -->
+  <section id="intro" class="band alt">
+    <div class="introsplit">
+      <div>
+        <p class="eyebrow">Omniverse Kit · OpenUSD · Python</p>
+        <h1>Group a selection without the model <em>moving</em>.</h1>
+        <p class="lede">
+          Drag prims onto a new parent in the Stage outliner and they jump, or
+          stretch. Nothing is broken: a prim's position is the product of every
+          transform above it, and you just changed that product. This is a
+          one-button Kit extension that does the arithmetic for you — pick the
+          prims, name two levels, and they land in a clean group exactly where
+          they already were.
+        </p>
+
+        <ul class="chips">
+          <li><b>1</b> click does the whole move</li>
+          <li><b>2</b> names to type, nothing else</li>
+          <li><b>0</b> pixels of movement in the viewport</li>
+        </ul>
+      </div>
+
+      <!-- SCREENSHOT SLOT ------------------------------------------------
+           This is a drawing of the panel, not a capture: every string in it is
+           taken from the extension's own widgets. To swap in the real thing,
+           save the capture as assets/shot-organizer.png (plus a quality=92
+           .webp, the recipe the importer panel uses — it is a UI panel, so PNG
+           rather than JPEG) and replace this <img> with the <picture> block
+           from the Maya page's intro. The window is 300x250 in Kit, so capture
+           it at 1:1 and declare those dimensions. -->
+      <figure class="shot panelshot">
+        <img src="assets/panel-organizer.svg" width="340" height="286"
+             loading="lazy" decoding="async"
+             alt="The Hierarchy Organizer panel: a heading reading Organize Prim Hierarchies, helper text reading Forces prims into /scene using Kit Commands, a Master Group field holding Car, a Sub Component field holding Tyre_Group_FL, and a Group Selected Prims button."/>
+        <figcaption>
+          The whole interface: two names and a button. It lives under
+          <em>Window &gt; Hierarchy Organizer</em>.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================== WATCH ==============================
+       The clip lives on LinkedIn, so this is their embed rather than a file:
+       it carries the post around the video, which is the point of linking it.
+       Kept near its native 504x399 — the card reflows its text rather than
+       scaling, so stretching it to the full column just makes a wide card with
+       a small video in it. Height is fixed because LinkedIn's iframe does not
+       report its own, and it is raised on narrow screens where the post text
+       wraps to more lines. -->
+  <section id="watch" class="band">
+    <div class="introsplit">
+      <div>
+        <p class="kicker">See it run</p>
+        <h2>The tool, on an imported car stage</h2>
+        <p class="intro">
+          Recorded in Omniverse Composer and posted on LinkedIn, so the card
+          beside this is the post itself rather than a copy of the video — the
+          write-up and the comments come with it.
+        </p>
+        <p class="hint">It plays in place — no need to leave the page.</p>
+      </div>
+
+      <figure class="shot panelshot postembed">
+        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7500434112017686528?compact=1"
+                title="LinkedIn post: the Hierarchy Organizer grouping a selection in Omniverse"
+                width="504" height="460" loading="lazy" frameborder="0"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <figcaption>
+          <a href="https://www.linkedin.com/feed/update/urn:li:ugcPost:7500434112017686528/"
+             rel="me noopener">LinkedIn</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- =============================== HOW =============================== -->
+  <section id="how" class="band alt">
+    <p class="kicker">What one click does</p>
+    <h2>Two Xforms, one move, every transform rewritten</h2>
+    <p class="intro">
+      The destination is <code>/scene/&lt;Master&gt;/&lt;Sub&gt;</code>. Both levels are
+      created only if they are missing, and a group that already exists is left
+      exactly where it is rather than being dragged to the new selection.
+    </p>
+
+    <figure>
+      <img src="assets/hierarchy-fix.svg" loading="lazy" decoding="async"
+           alt="Before: six prims sit flat under a World prim with the three wheel parts mixed in among the body and glass. After: two new Xform prims, Car and Tyre_Group_FL, hold the three wheel parts under /scene, with their leaf names unchanged, while everything that was not selected stays untouched under World."/>
+    </figure>
+
+    <div class="cards">
+      <article class="card">
+        <p class="metric">Groups</p>
+        <h3>Created only if missing</h3>
+        <p>
+          The master group and the sub-group are made as <code>Xform</code> prims.
+          Either name on its own is enough — give only a master and the selection
+          lands directly in it.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">The move</p>
+        <h3>Through Kit's own commands</h3>
+        <p>
+          <code>CreatePrim</code> and <code>MovePrim</code> rather than direct
+          stage edits, so the outliner, the layer stack and the undo queue all
+          see what happened. Leaf names are carried over as they are.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">The arithmetic</p>
+        <h3>The jump is cancelled, not avoided</h3>
+        <p>
+          The new group takes the world matrix of the first prim in the
+          selection. Every moved prim then gets one baked transform — its old
+          world matrix times the group's inverse — which puts it back exactly
+          where it was.
+        </p>
+      </article>
+      <article class="card">
+        <p class="metric">Rigs</p>
+        <h3>Skinning baked first</h3>
+        <p>
+          A skinned mesh is posed by its skeleton, not by its own transform, so
+          moving it alone snaps it back to bind pose. Each
+          <code>SkelRoot</code> in the selection is baked once, before any
+          matrix is read.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================== EDGES ============================== -->
+  <section id="hard" class="band">
+    <p class="kicker">Where the edges are</p>
+    <h2>What it trades away to never show you a jump</h2>
+    <p class="intro">
+      This is a layout and set-dressing tool. The honest limits are worth knowing
+      before you run it on something precious.
+    </p>
+
+    <div class="cards notes">
+      <article class="card">
+        <h3>It freezes, by design</h3>
+        <p>
+          Each moved prim's transform stack is replaced by a single baked matrix,
+          so authored translate, rotate and scale channels do not survive the
+          move. That is the trade for never seeing a shift — and it is what
+          <em>freeze</em> means in the tool's own description.
+        </p>
+      </article>
+      <article class="card">
+        <h3>One moment in time</h3>
+        <p>
+          Transforms are read at the default time code only. A prim with
+          animated transform values will lose those samples, which is why this
+          belongs in layout rather than on a shot that is already moving.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Undo is partial</h3>
+        <p>
+          The create and the move are Kit commands and undo cleanly. The baked
+          transforms and the skinning bake are direct USD writes and do not, so
+          a big pass is worth a save first.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Names are not deduplicated</h3>
+        <p>
+          Two selected prims with the same leaf name will collide in the
+          destination group. Nothing checks for it, so rename before grouping if
+          your selection spans several assemblies.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================== CLOSE ============================== -->
+  <section id="close" class="band close">
+    <p class="kicker">Next</p>
+    <h2>Three tools, one stage</h2>
+    <p class="intro">
+      This one tidies the stage. The Maya bridge gets a finished shot into it,
+      and the configurator turns that scene into something a customer can drive
+      from a browser.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="maya-to-omniverse.html">← Maya → Omniverse</a>
+      <a class="btn" href="configurator.html">The RTX configurator</a>
+      <a class="btn" href="mailto:gokul23gs@gmail.com?subject=Hierarchy%20Organizer&amp;body=Hi%20Gokul%2C%0D%0A%0D%0AI%20saw%20the%20Hierarchy%20Organizer%20tool.%0D%0A%0D%0ACompany%3A%0D%0AWhat%20we%20are%20trying%20to%20tidy%3A%0D%0A">Get in touch</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Gokul S — Technical 3D Artist · Chennai, Tamil Nadu</p>
+  <p class="small">
+    NVIDIA, Omniverse and RTX are trademarks of NVIDIA Corporation. OpenUSD is a
+    trademark of Pixar. Prim names in the diagram are illustrative.
+  </p>
+</footer>
+<script src="main.js" defer></script>
+</body>
+</html>

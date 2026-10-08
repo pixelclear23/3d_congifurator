@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 286" width="340" height="286"
+     role="img" aria-labelledby="hoTitle hoDesc"
+     font-family="Segoe UI, system-ui, sans-serif">
+  <title id="hoTitle">The Hierarchy Organizer panel</title>
+  <desc id="hoDesc">A narrow window titled Hierarchy Organizer, containing a heading reading Organize Prim Hierarchies, a line of helper text reading Forces prims into /scene using Kit Commands, a Master Group field holding Car, a Sub Component field holding Tyre_Group_FL, and a full-width Group Selected Prims button. Seven widgets in total; there is nothing else in the panel.</desc>
+
+  <rect width="340" height="286" fill="#0e1013"/>
+
+  <rect x="4" y="4" width="332" height="278" rx="10" fill="#171c22" stroke="#2a323c"/>
+  <path d="M14,4 h312 a10,10 0 0 1 10,10 v20 h-332 v-20 a10,10 0 0 1 10,-10 z" fill="#10151a"/>
+  <path d="M4,34 h332" stroke="#2a323c"/>
+  <text x="20" y="24" font-size="12.5" fill="#c7d0da">Hierarchy Organizer</text>
+
+  <text x="20" y="60" font-size="15" font-weight="700" fill="#e6edf3">Organize Prim Hierarchies</text>
+  <text x="20" y="80" font-size="11" fill="#7d8896">Forces prims into /scene using Kit Commands.</text>
+
+  <text x="20" y="112" font-size="11.5" fill="#9aa4b0">Master Group (e.g. Car)</text>
+  <rect x="20" y="120" width="300" height="26" rx="5" fill="#0c1013" stroke="#2f3a45"/>
+  <text x="30" y="137" font-size="12" fill="#e6edf3" font-family="Consolas, ui-monospace, monospace">Car</text>
+
+  <text x="20" y="168" font-size="11.5" fill="#9aa4b0">Sub Component (e.g. Tyre_Group)</text>
+  <rect x="20" y="176" width="300" height="26" rx="5" fill="#0c1013" stroke="#2f3a45"/>
+  <text x="30" y="193" font-size="12" fill="#e6edf3" font-family="Consolas, ui-monospace, monospace">Tyre_Group_FL</text>
+
+  <rect x="20" y="220" width="300" height="32" rx="7" fill="#4aa3ff" fill-opacity=".14" stroke="#4aa3ff"/>
+  <text x="170" y="240" text-anchor="middle" font-size="12.5" font-weight="600" fill="#8fd0ff">Group Selected Prims</text>
+</svg>

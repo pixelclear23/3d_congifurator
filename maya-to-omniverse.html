@@ -26,14 +26,19 @@
     <a href="#how">How it works</a>
     <a href="#craft">Hard parts</a>
     <a href="configurator.html">← Configurator</a>
+    <a href="hierarchy-organizer.html">Hierarchy →</a>
     <a class="ghost" href="index.html">Reel &amp; CV</a>
   </nav>
 </header>
 
-<!-- Gallery navigation: this is the last page, so only a way back. -->
+<!-- Gallery navigation: a step back to the configurator, on to the organizer. -->
 <a class="pagenav prev" href="configurator.html" aria-label="Previous page: the RTX configurator toolkit">
   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
   <span class="label">Configurator</span>
+</a>
+<a class="pagenav next" href="hierarchy-organizer.html" aria-label="Next page: the Hierarchy Organizer">
+  <span class="label">Hierarchy</span>
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
 </a>
 
 <main id="top">
@@ -65,15 +70,20 @@
     </figure>
   </section>
 
-  <!-- ============================== INTRO ============================== -->
+  <!-- ============================== INTRO ==============================
+       This section runs to the banner's width rather than the page's narrower
+       copy column, so its left edge lines up with the banner above it and the
+       panel's right edge lines up with the banner's right edge.
+
+       All of the copy, headline included, is the left column. With the headline
+       outside the split the panel started level with the lede and left a
+       headline-sized hole above itself. -->
   <section id="intro" class="band alt">
-    <p class="eyebrow">Maya · Arnold · OpenUSD · Omniverse Kit</p>
-    <h1>A Maya shot that arrives <em>finished</em>.</h1>
-    <!-- The Kit-side window sits beside this copy rather than under it: the
-         text column only needs about 60 characters, which was leaving the
-         right half of the 1100px column empty. -->
     <div class="introsplit">
       <div>
+        <p class="eyebrow">Maya · Arnold · OpenUSD · Omniverse Kit</p>
+        <h1>A Maya shot that arrives <em>finished</em>.</h1>
+
         <p class="lede">
           Native USD export moves geometry and leaves the rest to hand work:
           shaders land grey, per-face assignments collapse, glass renders solid,
@@ -322,14 +332,16 @@ maya_export.export(output_dir=r"C:/exports", name="Bag",
   <!-- ============================== CLOSE ============================== -->
   <section id="close" class="band close">
     <p class="kicker">Next</p>
-    <h2>Two tools, one pipeline</h2>
+    <h2>Three tools, one pipeline</h2>
     <p class="intro">
       This is the front half: getting a real shot into USD with its look intact.
       The configurator is the back half — making that scene something a customer
-      can drive from a browser.
+      can drive from a browser. The organizer is the small one that keeps the
+      stage in between tidy.
     </p>
     <div class="cta">
-      <a class="btn primary" href="configurator.html">← The RTX configurator</a>
+      <a class="btn primary" href="hierarchy-organizer.html">The Hierarchy Organizer →</a>
+      <a class="btn" href="configurator.html">← The RTX configurator</a>
       <a class="btn" href="mailto:gokul23gs@gmail.com?subject=Maya%20to%20Omniverse%20pipeline&amp;body=Hi%20Gokul%2C%0D%0A%0D%0AI%20saw%20the%20Maya%20to%20Omniverse%20tool.%0D%0A%0D%0ACompany%3A%0D%0AWhat%20we%20are%20trying%20to%20move%3A%0D%0A">Get in touch</a>
     </div>
   </section>
